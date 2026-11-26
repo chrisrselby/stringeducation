@@ -217,10 +217,11 @@ const PRINTABLES=[
  {t:"Beginner Note Flash Cards",type:"Printable",lvl:"Book 1",inst:"all",url:"#theory",d:"Violin, viola, cello and bass sets, with blank staves for student-made cards."},
  {t:"Rhythm Reading Exercises",type:"Printable",lvl:"Book 1",inst:"all",url:RR.ex,d:"Count, clap and play: quarter notes, eighth notes and rests in 4/4."},
  {t:"Flash Rhythm Reading Slides",type:"Slides",lvl:"Book 1",inst:"all",url:"#theory",d:"Project one rhythm at a time for whole-class reading."},
- {t:"Instrument Parts Diagram",type:"Printable",lvl:"Book 1",inst:"all",url:"https://www.stringeducation.org/lessons-activities/instrument-history-parts-and-care",d:"Label the parts of the violin, viola, cello, bass and bow."}
+ {t:"Instrument Parts Diagram",type:"Printable",lvl:"Book 1",inst:"all",url:F+"parts-and-care/instrument-parts-diagram.pdf",d:"Label the parts of the violin, viola, cello, bass and bow."},
+ {t:"Caring for Your Instrument",type:"Printable",lvl:"Book 1",inst:"all",url:F+"parts-and-care/caring-for-your-instrument.pdf",d:"Care rules to review at home with parents, plus the steps for unpacking and packing the instrument."}
 ];
 const SKILLS=[
- {id:"care",books:[1],t:"Instrument parts and care",lvl:"Book 1",d:"Name the parts, unpack the case and care for the instrument before the first note."},
+ {id:"care",books:[1],t:"Instrument parts and care",lvl:"Book 1",d:"Name the parts, unpack the case and care for the instrument before the first note.",ready:true},
  {id:"posture",books:[1],t:"Posture and left hand position",lvl:"Book 1",d:"Standing, sitting, the tripod of support and a relaxed left hand."},
  {id:"bow",books:[1],t:"Bow hold and right hand",lvl:"Book 1",d:"Pencil and straw bow holds, and why some teachers keep the bows until it's mastered."},
  {id:"rhythm",books:[1,2],t:"Rhythm",lvl:"Book 1",d:"Count out loud, keep a steady beat, then add the instrument."},
@@ -345,7 +346,7 @@ function videos(){
 
 let skBook=0;
 const OLD="https://www.stringeducation.org/";
-const SKILL_URL={care:OLD+"lessons-activities/instrument-history-parts-and-care",posture:OLD+"lessons-activities/instrument-and-left-hand-position",bow:OLD+"lessons-activities/right-hand",rhythm:"#theory",reading:"#theory",intonation:OLD+"lessons/improving-intonation"};
+const SKILL_URL={posture:OLD+"lessons-activities/instrument-and-left-hand-position",bow:OLD+"lessons-activities/right-hand",rhythm:"#theory",reading:"#theory",intonation:OLD+"lessons/improving-intonation"};
 const liveSkills=()=>SKILLS.filter(s=>s.ready||SKILL_URL[s.id]);
 // Teaching in Action: classroom videos of Chris teaching. Section stays hidden until this list has at least one video.
 // Add videos like: {t:"Teaching the bow hold with straws",yt:"VIDEO_ID",books:[1],skill:"bow",min:4,d:"One-sentence description."}
@@ -416,6 +417,24 @@ function showCreator(n,preset){
   app.querySelectorAll("[data-crb]").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.crb===n)));
 }
 
+function care(){
+  const ul=(a,cls)=>`<ol class="${cls}">${a.map(x=>`<li><span>${x}</span></li>`).join("")}</ol>`;
+  const PD=F+"parts-and-care/instrument-parts-diagram.pdf", CY=F+"parts-and-care/caring-for-your-instrument.pdf";
+  const dl=(u,t)=>`<a href="${u}" target="_blank" rel="noopener">${t}</a>`;
+  app.innerHTML=`<p><a href="#skills">← Teach a skill</a></p>
+  <div class="layout" style="margin-top:12px">
+  <aside class="toc"><b>On this page</b><ol><li><a href="#c-parts">Naming the instruments and parts</a></li><li><a href="#c-care">Unpacking and caring for the instrument</a></li></ol>
+  <div class="meta" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:16px">${lvlTag("Book 1")}${instTag("all")}</div></aside>
+  <article class="article">
+  <h1>Instrument parts and care</h1>
+  <p class="intro">Teach this unit while students are still collecting their materials. Students should learn to care for their instruments <i>before</i> they open the cases and start handling them.</p>
+  <div class="chips" style="margin-top:16px">${[[PD,"Instrument Parts Diagram"],[CY,"Caring for Your Instrument"]].map(([u,t])=>`<a class="btn ghost" target="_blank" rel="noopener" href="${u}">${t} (PDF) →</a>`).join("")}</div>
+  <h2 id="c-parts">Naming the string instruments and parts</h2>
+  ${ul(["Lay out a violin, viola, cello and bass, with bows, including a German bass bow.",`Copy and hand out the ${dl(PD,"Instrument Parts Diagram")}.`,"Introduce the four instruments and what makes each one unique.","Point to each part of an instrument and name it.","Students fill in the diagram. Review the spelling.","Review the parts and spelling on later days.","Homework: students can take a blank diagram home to complete.","Assessment: students label and spell every part on the diagram without help."],"steps")}
+  <h2 id="c-care">Unpacking and caring for a string instrument</h2>
+  ${ul([`Copy and hand out ${dl(CY,"Caring for Your Instrument")}.`,"Read and explain the handout with the class, including why each rule matters.","Review by asking students questions about instrument care.","Students take the sheet home to review with their parents. A parent signature is recommended.","Once students have their instruments, they follow the steps at the bottom of the handout. Upper and lower strings may need to unpack at different times.","Homework: students take the instrument and handout home and show their parents, who check that the steps are followed correctly.","Assessment: students demonstrate the seven steps of unpacking and packing the instrument. Use the handout as a checklist and add three care questions for a 10-point grade."],"steps")}
+  </article></div>`;
+}
 function vibrato(){
   const ul=(a,cls)=>`<ol class="${cls}">${a.map(x=>`<li><span>${x}</span></li>`).join("")}</ol>`;
   app.innerHTML=`<p><a href="#skills">← Teach a skill</a></p>
@@ -665,11 +684,11 @@ function wireSamples(scope){scope.querySelectorAll("[data-sample]").forEach(a=>a
   e.preventDefault();showCreator(s.b,s);document.getElementById("b-create").scrollIntoView({behavior:"smooth"})}))}
 let pendingSample=null;
 
-const ROUTES={home,teaching,videos,theory:videos,skills,vibrato,printables,assessment,about,foundations:()=>levelPage("foundations"),advancing:()=>levelPage("advancing"),beginning:()=>levelPage("foundations"),advanced:()=>levelPage("advancing"),book1:()=>levelPage("foundations",1),book2:()=>levelPage("foundations",2),book3:()=>levelPage("advancing",3),book4:()=>levelPage("advancing",4)};
-const NAV={teaching:"teaching",foundations:"foundations",advancing:"advancing",beginning:"foundations",advanced:"advancing",book1:"foundations",book2:"foundations",book3:"advancing",book4:"advancing",videos:"theory",theory:"theory",skills:"skills",vibrato:"skills",printables:"printables",assessment:"assessment",about:"about"};
+const ROUTES={home,teaching,care,videos,theory:videos,skills,vibrato,printables,assessment,about,foundations:()=>levelPage("foundations"),advancing:()=>levelPage("advancing"),beginning:()=>levelPage("foundations"),advanced:()=>levelPage("advancing"),book1:()=>levelPage("foundations",1),book2:()=>levelPage("foundations",2),book3:()=>levelPage("advancing",3),book4:()=>levelPage("advancing",4)};
+const NAV={teaching:"teaching",foundations:"foundations",advancing:"advancing",beginning:"foundations",advanced:"advancing",book1:"foundations",book2:"foundations",book3:"advancing",book4:"advancing",videos:"theory",theory:"theory",skills:"skills",vibrato:"skills",care:"skills",printables:"printables",assessment:"assessment",about:"about"};
 function route(){
   const r=(location.hash||"#home").slice(1);
-  if(r.startsWith("v-")||r.startsWith("b-"))return;
+  if(r.startsWith("v-")||r.startsWith("b-")||r.startsWith("c-"))return;
   (ROUTES[r]||home)();
   document.querySelectorAll("nav.main a").forEach(a=>{if(a.getAttribute("href")==="#"+NAV[r])a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
   window.scrollTo(0,0);
