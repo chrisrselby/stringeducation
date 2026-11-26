@@ -91,6 +91,14 @@ section{margin-top:48px}
 .vids a:hover{outline:2px solid var(--spruce)}
 .play{flex:none;width:30px;height:30px;border-radius:50%;background:var(--spruce);display:grid;place-items:center}
 .play::after{content:"";border-left:9px solid var(--spruce-ink);border-top:6px solid transparent;border-bottom:6px solid transparent;margin-left:3px}
+#vplayer{width:min(960px,calc(100vw - 32px));max-width:none;padding:0;border:0;border-radius:14px;background:var(--surface);color:var(--ink)}
+#vplayer::backdrop{background:rgba(0,0,0,.7)}
+.vp-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px}
+.vp-head h3{margin:0;font-size:1.05rem}
+.vp-x{border:0;background:none;font-size:1.8rem;line-height:1;cursor:pointer;color:inherit;padding:0 4px}
+.vp-frame{position:relative;padding-top:56.25%;background:#000}
+.vp-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vp-foot{margin:0;padding:10px 16px;font-size:.9rem}
 .layout{display:grid;grid-template-columns:240px 1fr;gap:40px}
 .layout > *{min-width:0}
 .toc{position:sticky;top:90px;align-self:start;font-size:.95rem}
@@ -167,6 +175,10 @@ footer .wrap{padding-block:24px;display:flex;justify-content:space-between;gap:1
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 const YT=id=>"https://youtu.be/"+id;
+// Theory videos hosted ad-free on Bunny Stream: YouTube id -> [Bunny id, seconds, date made]. Videos not listed play from YouTube.
+const BUNNY_LIB=822587;
+const BN={"zuyH5kP6EbA":["1f3a654f-a3aa-4263-ad49-cc41683fe688",118,"2020-08-26"],"CGmfGaZecHA":["596153ae-7ea0-4c4b-a56a-df876929c253",211,"2020-07-15"],"Tkr7ODx5egg":["763b3f19-6339-4e31-a9b8-23014cac8eff",179,"2020-07-16"],"i9nW6IX9XD0":["cb1ba9be-d595-49a1-909a-dab9472dc0d8",131,"2020-07-01"],"9CYxuk4Vgbo":["3faa5128-c291-4e3e-a7de-f9fd6f4a6efc",125,"2020-07-01"],"vVl1mkcDWEA":["fd68fd82-4865-41c6-a49b-bbabef2e5da2",202,"2020-07-01"],"w9Z6P4ZaWq4":["215faf98-329f-42e3-ab6b-91906674bd5b",102,"2020-07-17"],"5XBztWv2GLs":["3e7c64c7-05bb-4485-aa06-d5663d9baaa9",85,"2020-07-17"],"mYCrnMM8yC8":["f75229ad-44fd-45e1-b8ee-ee91868f3f51",136,"2020-07-17"],"ltz8LvcWBJw":["a635be03-a480-45c8-a565-d667dfef5627",145,"2020-07-16"],"eLUGzE06kdY":["aea40805-c11f-4ec0-9f5b-aa6e8f973b42",290,"2020-07-03"],"mjHYVoZeFyA":["f9a15961-3231-4ac7-81a4-5ec007647fd9",122,"2020-06-24"],"ousBNBQSi2c":["aacac4f6-a9d1-4f00-8855-e33580cc2455",129,"2020-06-25"],"aPU5yghtlJM":["38fbb949-be6f-40e3-8e76-6e352fb44dc8",168,"2020-06-25"],"NpXvT64984s":["d82e2b8b-66c1-47bf-a93a-f6ce6e84aff8",149,"2020-06-25"],"C2TPW9sbCD0":["f2b01b02-5a67-492e-8805-d35c7dbee9ee",143,"2020-06-27"],"Zq1WEJuHXnI":["1f4670a7-05ad-4a53-a324-883c0d097b63",217,"2020-08-01"],"Bj8fjrelTJQ":["3de125b3-de3a-47a6-b178-2af9a8ba5930",179,"2020-08-02"],"zneF-_7ta40":["04815626-840c-41fb-814b-4e774761c96d",156,"2020-07-02"],"L6tbAG--pLA":["5fb67777-4b7d-47ef-ace8-a8a6c7d72d3f",146,"2020-07-02"],"iD_xgKGvy-s":["b3dd80dd-59e9-44b3-89d9-f316ca1eaf10",173,"2020-07-02"],"_CbrlN898nw":["fb4401eb-79c4-483a-a878-7e4fcc2943d2",152,"2020-07-15"],"JWqy__lZiLA":["b542dd44-ea3c-4e6a-96b0-3ca0358b1a0f",134,"2020-07-15"],"C5yTRdTFt5Q":["de909170-0360-407b-bf81-79573f55bd46",241,"2020-08-01"],"HcS5loS8mNs":["030fb3bc-86ca-413b-8fad-4478c96b6ca1",211,"2020-08-02"],"rqelc3yqPvk":["06e2080a-0392-4ec8-a2e0-099ebdd67204",121,"2020-07-02"],"8K2Xvsdnz1k":["6825919a-4e44-4aec-9e00-22e55b8a50d8",202,"2020-07-02"],"wJ2GNWw42Mw":["bb17b423-37c0-4ebd-88ab-858c34201d51",236,"2020-07-14"],"TrM0QWIp2yg":["8b5fb9fc-4015-4c06-a10f-43a29b5a9bf3",221,"2020-07-14"],"IaIhYjNpUsQ":["3b0e4526-63be-459c-b180-937cb4182820",190,"2020-07-13"],"KpnMe67yfy8":["6e68bedf-0f48-456d-abb7-5cca8e850bdb",173,"2020-07-13"],"Iviiyk3Gof4":["b721fcff-5683-4d10-ab06-5fe9935ff207",214,"2020-11-01"],"x5fmAg8Xm5o":["9831d91e-dd63-44df-a002-4f518e5c1e2e",156,"2020-08-16"],"3ff9fxzcAZM":["a7f6b0ba-a41e-4e36-934b-13c8860edcd9",174,"2020-08-18"],"p3CHlFvsR1k":["e3c38785-af9d-4c18-b547-e21739fb360e",175,"2020-08-18"],"xpwyh-s7tUQ":["df2e02fa-3e9c-46b7-8964-d9359cb92f8a",239,"2020-08-16"],"5emC8Om6WBA":["43ac0a80-2d6a-4bb2-9b3f-439ebb6e12f6",187,"2020-08-16"],"rB_Mvc8R3lI":["c5743a40-3d84-43cf-ac7d-4cf75459b929",227,"2020-08-09"],"YVUnhZ3XHJk":["67d18715-420a-41c8-be2e-a9cedb02469c",196,"2020-08-09"],"TFAH8Z80A3A":["c2e0d0cc-1fc0-48d2-a9bb-3176579f15d9",138,"2020-08-22"],"Xv4egKx5Jwo":["53e0d35e-8a22-41b5-a6b4-f76bc053f714",163,"2020-08-22"],"Kn5FoGcT4kM":["1ce41de7-6ce9-416e-ab32-09be51655873",258,"2020-08-22"],"N38-Qfd97pU":["a8948668-3d98-4978-ba6a-498eab46d5fe",163,"2020-08-18"],"hrLaLYNoM84":["1cfe8080-7ed1-4d3d-aafa-f1bcb68dea88",148,"2020-08-18"],"EOf_Dcg560I":["423516f5-3bd3-41b7-98a4-057fc97e89e1",195,"2020-08-08"],"FikNOdspUCE":["62567a32-5b21-4e48-848c-2942a6ae1842",215,"2020-08-08"],"8oze1F5uXKQ":["685bea63-0ce0-4428-8ce9-2716e5767c9e",172,"2020-09-13"],"EZjpNRQF2hg":["148a6cd2-89c7-4bc0-9354-9457d8639475",174,"2020-09-18"],"DHtuJ7xn56o":["f576ab75-28d5-418a-a167-d947986fcd24",196,"2020-09-19"],"OxlTOTp4abc":["3a937a0f-001d-4aef-b2d8-edfbb47bb325",139,"2020-09-14"],"r7DIQ_YOIUs":["4d108293-b6cd-45e8-b425-252447d3cc64",267,"2020-09-19"],"o2r423tCUGc":["54811b65-5257-4829-982f-febae2709e46",230,"2020-09-06"],"dnu5DL_E2nA":["67582a1c-5980-4070-b5bd-54e3783f2ca6",258,"2020-09-06"],"TCkSeCH5S6k":["d5fcdbd1-4cac-4333-9890-a5fa11ea1091",168,"2020-09-01"],"KWf6MnlTf_M":["422f0715-684a-4305-a81d-ced0d4022a57",123,"2020-09-01"],"sb8QPbP0nDs":["55f2ecff-1eba-40ee-9be8-3f68b2bd929a",122,"2020-09-01"],"-tNeBRBdSAI":["6079ba52-1697-4689-908a-29f19a179e20",153,"2020-09-01"],"n2aqMQVzzfU":["65d57885-4217-4f9d-b0d1-6b786b560a69",221,"2020-08-07"],"y2YIL-KPLDY":["54537873-0ca7-4aa7-bd1c-06e426060d48",199,"2020-08-07"],"efeuF4IBCG0":["a5e1c040-4e61-4e0f-9f05-17cf3e9a707f",286,"2020-10-10"],"qjKd4XrW7ow":["a13ef94f-e44e-4978-bef2-bc41ce0b8cff",202,"2020-10-11"],"QSbR-bTEff0":["7c619173-91da-432d-bc98-b5162e0f6bfa",153,"2020-10-11"]};
+const VURL=id=>BN[id]?`https://iframe.mediadelivery.net/play/${BUNNY_LIB}/${BN[id][0]}`:YT(id);
 const BOOKS=[
  {book:1,units:[
   [1,"The Origins of the Orchestra",[["The Origin of String Instruments","zuyH5kP6EbA"],["The Baroque Era (1600–1750)","CGmfGaZecHA"],["Early Italian String Instrument Composers","Tkr7ODx5egg"]]],
@@ -258,7 +270,7 @@ const levelOf=n=>LEVELS.find(L=>L.books.includes(n));
 const LVL=n=>SHORT[n];
 const bookLbl=a=>{if(a.length===4)return "All books";const b=a.filter(n=>n<3).map(n=>SHORT[n]),o=a.filter(n=>n>=3).map(n=>SHORT[n]);const parts=[...(b.length===2?["Books 1–2"]:b),...(o.length===2?["Middle and Upper Level"]:o)];return parts.join(", ")};
 function allItems(){
-  const v=[];BOOKS.forEach(b=>b.units.forEach(u=>u[2].forEach(x=>v.push({t:x[0],type:"Video",lvl:"Theory Book "+b.book,inst:"all",url:YT(x[1]),d:`Music Theory Book ${b.book}, Unit ${u[0]}: ${u[1]}`}))));
+  const v=[];BOOKS.forEach(b=>b.units.forEach(u=>u[2].forEach(x=>v.push({t:x[0],type:"Video",lvl:"Theory Book "+b.book,inst:"all",url:VURL(x[1]),d:`Music Theory Book ${b.book}, Unit ${u[0]}: ${u[1]}`}))));
   return [...v,...PRINTABLES,...liveSkills().map(s=>({t:"Teaching "+s.t.toLowerCase(),type:"Lesson guide",lvl:bookLbl(s.books),inst:"all",url:s.ready?"#"+s.id:SKILL_URL[s.id],d:s.d})),...TEACHING.map(v=>({t:v.t,type:"Video",lvl:bookLbl(v.books),inst:"all",url:"https://youtu.be/"+v.yt,d:"Teaching in Action: "+v.d})),...SAMPLES.map(r=>({t:r.t,type:"Rubric",lvl:SHORT[r.b],inst:"all",url:"#"+levelOf(r.b).id,d:r.d}))];
 }
 function card(x){
@@ -291,7 +303,7 @@ function home(){
   <section aria-labelledby="inst"><div class="sec-head"><div><h2 id="inst">Browse by instrument</h2><p>Student parts and guides for each section of your orchestra.</p></div></div>
   <div class="chips">${Object.keys(INST).map(k=>`<a class="chip t-${k}" style="text-decoration:none;border-color:currentColor" href="#printables" data-inst="${k}">${INST[k]}</a>`).join("")}</div></section>
   <section aria-labelledby="new"><div class="sec-head"><div><h2 id="new">Good places to start</h2><p>A lesson guide, a printable and a video to try first.</p></div></div>
-  <div class="grid">${card({t:"Teaching vibrato",type:"Lesson guide",lvl:bookLbl([2,3,4]),inst:"all",url:"#vibrato",d:SKILLS[6].d})}${card(PRINTABLES[0])}${card({t:"Introduction to Key Signatures",type:"Video",lvl:"Book 1",inst:"all",url:YT("8K2Xvsdnz1k"),d:"Music Theory Book 1, Unit 10"})}</div></section>`;
+  <div class="grid">${card({t:"Teaching vibrato",type:"Lesson guide",lvl:bookLbl([2,3,4]),inst:"all",url:"#vibrato",d:SKILLS[6].d})}${card(PRINTABLES[0])}${card({t:"Introduction to Key Signatures",type:"Video",lvl:"Book 1",inst:"all",url:VURL("8K2Xvsdnz1k"),d:"Music Theory Book 1, Unit 10"})}</div></section>`;
   document.getElementById("hs").addEventListener("submit",e=>{e.preventDefault();runSearch(document.getElementById("q").value)});
   app.querySelectorAll("[data-inst]").forEach(a=>a.addEventListener("click",()=>{state.inst=a.dataset.inst}));
 }
@@ -341,10 +353,22 @@ function videos(){
   <h2 id="v-theory" style="margin-top:40px">Theory videos</h2>
   <p class="lead muted" style="margin-top:12px;max-width:40em">Short tutorials for every unit of <i>Music Theory for the Successful String Musician</i>. Assign one for homework or play it in class. These go with the theory books, separate from the method books.</p>
   <div class="tabs" role="group" aria-label="Choose a book">${[1,2].map(n=>`<button class="chip" aria-pressed="${n===book}" data-book="${n}">Book ${n}</button>`).join("")}</div>
-  <div style="margin-top:16px">${b.units.map(u=>`<div class="unit"><div class="unit-head"><span class="unit-num">${u[0]}</span><h3>${esc(u[1])}</h3></div><ul class="vids">${u[2].map(v=>`<li><a href="${YT(v[1])}" target="_blank" rel="noopener"><span class="play" aria-hidden="true"></span>${esc(v[0])}</a></li>`).join("")}</ul></div>`).join("")}</div>
+  <div style="margin-top:16px">${b.units.map(u=>`<div class="unit"><div class="unit-head"><span class="unit-num">${u[0]}</span><h3>${esc(u[1])}</h3></div><ul class="vids">${u[2].map(v=>`<li><a href="${VURL(v[1])}" target="_blank" rel="noopener" data-v="${v[1]}" data-vt="${esc(v[0])}"><span class="play" aria-hidden="true"></span>${esc(v[0])}</a></li>`).join("")}</ul></div>`).join("")}</div>
   `;
   app.querySelectorAll("[data-book]").forEach(btn=>btn.addEventListener("click",()=>{book=+btn.dataset.book;videos()}));
+  app.querySelectorAll("[data-v]").forEach(a=>a.addEventListener("click",e=>{if(!BN[a.dataset.v])return;e.preventDefault();openVid(a.dataset.v,a.dataset.vt)}));
 }
+function openVid(id,t){
+  let d=document.getElementById("vplayer");
+  if(!d){d=document.createElement("dialog");d.id="vplayer";d.setAttribute("aria-label","Video player");document.body.append(d);
+    d.addEventListener("close",()=>{d.innerHTML=""});d.addEventListener("click",e=>{if(e.target===d)d.close()})}
+  d.innerHTML=`<div class="vp-head"><h3>${esc(t)}</h3><button class="vp-x" aria-label="Close">×</button></div><div class="vp-frame"><iframe src="https://iframe.mediadelivery.net/embed/${BUNNY_LIB}/${BN[id][0]}?autoplay=true&preload=true&responsive=true" title="${esc(t)}" allow="autoplay;fullscreen;picture-in-picture;encrypted-media" allowfullscreen></iframe></div><p class="vp-foot muted">Christopher Selby · <a href="${YT(id)}" target="_blank" rel="noopener">Also on YouTube →</a></p>`;
+  d.querySelector(".vp-x").addEventListener("click",()=>d.close());
+  d.showModal();
+}
+// Machine-readable video list (schema.org) so search and AI tools credit the author.
+(()=>{const items=[];BOOKS.forEach(b=>b.units.forEach(u=>u[2].forEach(x=>{const m=BN[x[1]];if(!m)return;items.push({"@type":"VideoObject",name:x[0],description:`Music Theory for the Successful String Musician, Book ${b.book}, Unit ${u[0]}: ${u[1]}. Tutorial by Christopher Selby.`,author:{"@type":"Person",name:"Christopher Selby"},uploadDate:m[2],duration:`PT${Math.floor(m[1]/60)}M${m[1]%60}S`,embedUrl:`https://iframe.mediadelivery.net/embed/${BUNNY_LIB}/${m[0]}`,thumbnailUrl:`https://img.youtube.com/vi/${x[1]}/hqdefault.jpg`,sameAs:YT(x[1]),isFamilyFriendly:true,inLanguage:"en"})})));
+  const s=document.createElement("script");s.type="application/ld+json";s.textContent=JSON.stringify({"@context":"https://schema.org","@type":"ItemList",name:"Theory videos by Christopher Selby",itemListElement:items.map((v,i)=>({"@type":"ListItem",position:i+1,item:v}))});document.head.append(s)})();
 
 let skBook=0;
 const OLD="https://www.stringeducation.org/";
