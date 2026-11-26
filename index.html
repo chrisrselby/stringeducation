@@ -151,7 +151,7 @@ footer .wrap{padding-block:24px;display:flex;justify-content:space-between;gap:1
 <header class="top"><div class="wrap">
   <a class="logo" href="#home" aria-label="StringEducation.org home"><svg class="lockup" viewBox="10 4 188 142" aria-hidden="true" style="color:var(--spruce)"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path stroke-width="1.6" d="M27.2 13.5 L37.2 43.8"/><path stroke-width="2.5" d="M37.2 43.8 C31 44 25.2 47.2 24.9 54.4 C24.7 60 26.6 64.2 28.8 67.8 C33.9 70.8 34.4 80.6 31.3 84.6 C30.3 85.9 28.9 86.5 28.6 87.6 C26.5 96 26.4 106 30.5 112 C34 117.5 41 120.6 51.4 120.6"/><path stroke-width="1.8" d="M16.4 53.2 C16.1 59 17.9 63.6 20.6 68 C25.1 72.2 25.9 82 23.7 87.4 C22.9 89 21.1 89.8 20.3 91 C17.6 100 16.9 110 22 117 C25.4 121.8 30 124.6 35.2 125.4"/><path stroke-width="1.7" d="M48 126.6 L52.4 141.2"/></g><text x="41" y="73.5" font-family="Playfair Display, Georgia, serif" font-weight="600" font-size="31.9" fill="currentColor">String</text><text x="41" y="107.95" font-family="Playfair Display, Georgia, serif" font-weight="600" font-size="31.9" fill="currentColor">Education</text></svg></a>
   <nav class="main" aria-label="Main">
-    <a href="#foundations">Foundations</a><a href="#advancing">Advancing</a><a href="#videos">Theory Videos</a><a href="#skills">Teach a Skill</a><a href="#assessment">Assessment</a><a href="#about">About</a>
+    <a href="#foundations">Foundations</a><a href="#advancing">Advancing</a><a href="#theory">Theory &amp; Literacy</a><a href="#skills">Teach a Skill</a><a href="#assessment">Assessment</a><a href="#about">About</a>
   </nav>
 </div></header>
 
@@ -277,7 +277,7 @@ function home(){
   <div class="paths" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">${LEVELS.map(L=>`<a class="path" href="#${L.id}"><span class="k">${esc(L.pace)}</span><h3>${esc(L.title)}</h3><p>${esc(L.lead)}</p><p class="muted" style="font-size:.9rem">Matches <i>${esc(L.series)}</i>.</p><span class="count">Open ${esc(L.nav)} →</span></a>`).join("")}</div></section>
   <section aria-labelledby="more"><div class="sec-head"><h2 id="more">Across all books</h2></div>
   <div class="grid">
-    <a class="path" href="#videos"><span class="k">Watch</span><h3>Music theory videos</h3><p>Tutorials for every unit of Music Theory for the Successful String Musician.</p><span class="count">${VIDEO_COUNT} videos →</span></a>
+    <a class="path" href="#theory"><span class="k">Read and watch</span><h3>Theory &amp; Literacy</h3><p>Tutorials for every unit of Music Theory for the Successful String Musician.</p><span class="count">${VIDEO_COUNT} videos →</span></a>
     <a class="path" href="#skills"><span class="k">Teach</span><h3>Teach a skill</h3><p>Find any skill, like vibrato or intonation, without knowing which book it starts in.</p><span class="count">${liveSkills().length} skills →</span></a>
     <a class="path" href="#assessment"><span class="k">Assess</span><h3>Assessment</h3><p>Sample rubrics for every book, and a rubric creator that builds and prints your own.</p><span class="count">${SAMPLES.length} sample rubrics →</span></a>
   </div></section>
@@ -299,7 +299,7 @@ function runSearch(q){
 let book=1;
 function videos(){
   const b=BOOKS.find(x=>x.book===book);
-  app.innerHTML=`<h1>Music theory videos</h1>
+  app.innerHTML=`<h1>Theory &amp; Literacy</h1>
   <p class="lead muted" style="margin-top:12px;max-width:40em">Short tutorials for every unit of <i>Music Theory for the Successful String Musician</i>. Assign one for homework or play it in class. These go with the theory books, separate from the method books.</p>
   <div class="tabs" role="group" aria-label="Choose a book">${[1,2].map(n=>`<button class="chip" aria-pressed="${n===book}" data-book="${n}">Book ${n}</button>`).join("")}</div>
   <div style="margin-top:16px">${b.units.map(u=>`<div class="unit"><div class="unit-head"><span class="unit-num">${u[0]}</span><h3>${esc(u[1])}</h3></div><ul class="vids">${u[2].map(v=>`<li><a href="${YT(v[1])}" target="_blank" rel="noopener"><span class="play" aria-hidden="true"></span>${esc(v[0])}</a></li>`).join("")}</ul></div>`).join("")}</div>
@@ -621,8 +621,8 @@ function wireSamples(scope){scope.querySelectorAll("[data-sample]").forEach(a=>a
   e.preventDefault();showCreator(s.b,s);document.getElementById("b-create").scrollIntoView({behavior:"smooth"})}))}
 let pendingSample=null;
 
-const ROUTES={home,teaching,videos,skills,vibrato,printables,assessment,about,foundations:()=>levelPage("foundations"),advancing:()=>levelPage("advancing"),beginning:()=>levelPage("foundations"),advanced:()=>levelPage("advancing"),book1:()=>levelPage("foundations",1),book2:()=>levelPage("foundations",2),book3:()=>levelPage("advancing",3),book4:()=>levelPage("advancing",4)};
-const NAV={teaching:"teaching",foundations:"foundations",advancing:"advancing",beginning:"foundations",advanced:"advancing",book1:"foundations",book2:"foundations",book3:"advancing",book4:"advancing",videos:"videos",skills:"skills",vibrato:"skills",printables:"printables",assessment:"assessment",about:"about"};
+const ROUTES={home,teaching,videos,theory:videos,skills,vibrato,printables,assessment,about,foundations:()=>levelPage("foundations"),advancing:()=>levelPage("advancing"),beginning:()=>levelPage("foundations"),advanced:()=>levelPage("advancing"),book1:()=>levelPage("foundations",1),book2:()=>levelPage("foundations",2),book3:()=>levelPage("advancing",3),book4:()=>levelPage("advancing",4)};
+const NAV={teaching:"teaching",foundations:"foundations",advancing:"advancing",beginning:"foundations",advanced:"advancing",book1:"foundations",book2:"foundations",book3:"advancing",book4:"advancing",videos:"theory",theory:"theory",skills:"skills",vibrato:"skills",printables:"printables",assessment:"assessment",about:"about"};
 function route(){
   const r=(location.hash||"#home").slice(1);
   if(r.startsWith("v-")||r.startsWith("b-"))return;
@@ -630,7 +630,8 @@ function route(){
   document.querySelectorAll("nav.main a").forEach(a=>{if(a.getAttribute("href")==="#"+NAV[r])a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
   window.scrollTo(0,0);
 }
-if(TEACHING.length){const a=document.createElement("a");a.href="#teaching";a.textContent="Teaching in Action";document.querySelector('nav.main a[href="#videos"]').before(a)}
+if(TEACHING.length){const a=document.createElement("a");a.href="#teaching";a.textContent="Teaching in Action";document.querySelector('nav.main a[href="#theory"]').before(a)}
+LEVELS.forEach(L=>{const x=document.querySelector(`nav.main a[href="#${L.id}"]`);if(x)x.textContent=L.nav});
 addEventListener("hashchange",route);route();
 </script>
 
