@@ -151,7 +151,7 @@ footer .wrap{padding-block:24px;display:flex;justify-content:space-between;gap:1
 <header class="top"><div class="wrap">
   <a class="logo" href="#home" aria-label="StringEducation.org home"><svg class="lockup" viewBox="10 4 188 142" aria-hidden="true" style="color:var(--spruce)"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path stroke-width="1.6" d="M27.2 13.5 L37.2 43.8"/><path stroke-width="2.5" d="M37.2 43.8 C31 44 25.2 47.2 24.9 54.4 C24.7 60 26.6 64.2 28.8 67.8 C33.9 70.8 34.4 80.6 31.3 84.6 C30.3 85.9 28.9 86.5 28.6 87.6 C26.5 96 26.4 106 30.5 112 C34 117.5 41 120.6 51.4 120.6"/><path stroke-width="1.8" d="M16.4 53.2 C16.1 59 17.9 63.6 20.6 68 C25.1 72.2 25.9 82 23.7 87.4 C22.9 89 21.1 89.8 20.3 91 C17.6 100 16.9 110 22 117 C25.4 121.8 30 124.6 35.2 125.4"/><path stroke-width="1.7" d="M48 126.6 L52.4 141.2"/></g><text x="41" y="73.5" font-family="Playfair Display, Georgia, serif" font-weight="600" font-size="31.9" fill="currentColor">String</text><text x="41" y="107.95" font-family="Playfair Display, Georgia, serif" font-weight="600" font-size="31.9" fill="currentColor">Education</text></svg></a>
   <nav class="main" aria-label="Main">
-    <a href="#book1">Book 1</a><a href="#book2">Book 2</a><a href="#book3">Middle Level</a><a href="#book4">Book 4</a><a href="#videos">Theory Videos</a><a href="#skills">Teach a Skill</a><a href="#assessment">Assessment</a><a href="#about">About</a>
+    <a href="#foundations">Foundations</a><a href="#advancing">Advancing</a><a href="#videos">Theory Videos</a><a href="#skills">Teach a Skill</a><a href="#assessment">Assessment</a><a href="#about">About</a>
   </nav>
 </div></header>
 
@@ -221,8 +221,8 @@ const SKILLS=[
  {id:"bow",books:[1],t:"Bow hold and right hand",lvl:"Book 1",d:"Pencil and straw bow holds, and why some teachers keep the bows until it's mastered."},
  {id:"rhythm",books:[1,2],t:"Rhythm",lvl:"Book 1",d:"Count out loud, keep a steady beat, then add the instrument."},
  {id:"reading",books:[1,2],t:"Note reading",lvl:"Book 1",d:"Flash cards, projected slides and practice websites for every instrument."},
- {id:"intonation",books:[1,2,3],t:"Intonation",lvl:"Book 2",d:"Put the finger in the right place, then tune it to the ensemble."},
- {id:"vibrato",books:[2,3],t:"Vibrato",lvl:"Middle Level",d:"Step-by-step sequences for violin, viola, cello and bass, with checkpoints.",ready:true},
+ {id:"intonation",books:[1,2,3,4],t:"Intonation",lvl:"Book 2",d:"Put the finger in the right place, then tune it to the ensemble."},
+ {id:"vibrato",books:[2,3,4],t:"Vibrato",lvl:"Middle Level",d:"Step-by-step sequences for violin, viola, cello and bass, with checkpoints.",ready:true},
  {id:"rehearsal",books:[1,2,3,4],t:"Rehearsal and classroom",lvl:"All books",d:"Rehearsal strategies, routines, procedures and classroom management."}
 ];
 const GIA="https://giamusic.com/product-streaming-videos-set/public/";
@@ -242,12 +242,17 @@ const app=document.getElementById("app");
 
 const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
 const SHORT={1:"Book 1",2:"Book 2",3:"Middle Level",4:"Book 4"};
-const LEVEL={1:"Beginning",2:"Developing",3:"Intermediate",4:"Advanced high school"};
-const LVL=n=>`${LEVEL[n]} (${SHORT[n]})`;
-const bookLbl=a=>{if(a.length===4)return "All books";const b=a.filter(n=>n<3),o=a.filter(n=>n>=3).map(n=>SHORT[n]);const parts=b.length===2?["Books 1–2"]:b.map(n=>SHORT[n]);return [...parts,...o].join(", ")};
+// Two level pages. Each gathers its books; a book filter on the page narrows to one book.
+const LEVELS=[
+ {id:"foundations",nav:"Foundations",title:"Foundations (Books 1–2)",books:[1,2],books_lbl:"Books 1 and 2",series:"Habits of a Successful Young String Musician, Books 1 and 2",pace:"Usually years 1 to 3",lead:"From the first day with an instrument to playing in keys, slurring and reading as a section."},
+ {id:"advancing",nav:"Advancing",title:"Advancing (Middle Level & Book 4)",books:[3,4],books_lbl:"Middle Level and Book 4",series:"Habits of a Successful Middle Level String Musician, and Habits of a Successful String Musician, 2nd Edition",pace:"Middle school through advanced high school",lead:"Shifting, vibrato, bowing styles and scales, up to advanced high school orchestra."}
+];
+const levelOf=n=>LEVELS.find(L=>L.books.includes(n));
+const LVL=n=>SHORT[n];
+const bookLbl=a=>{if(a.length===4)return "All books";const b=a.filter(n=>n<3).map(n=>SHORT[n]),o=a.filter(n=>n>=3).map(n=>SHORT[n]);const parts=[...(b.length===2?["Books 1–2"]:b),...(o.length===2?["Middle Level & Book 4"]:o)];return parts.join(", ")};
 function allItems(){
   const v=[];BOOKS.forEach(b=>b.units.forEach(u=>u[2].forEach(x=>v.push({t:x[0],type:"Video",lvl:"Theory Book "+b.book,inst:"all",url:YT(x[1]),d:`Music Theory Book ${b.book}, Unit ${u[0]}: ${u[1]}`}))));
-  return [...v,...PRINTABLES,...liveSkills().map(s=>({t:"Teaching "+s.t.toLowerCase(),type:"Lesson guide",lvl:bookLbl(s.books),inst:"all",url:s.ready?"#"+s.id:SKILL_URL[s.id],d:s.d})),...TEACHING.map(v=>({t:v.t,type:"Video",lvl:bookLbl(v.books),inst:"all",url:"https://youtu.be/"+v.yt,d:"Teaching in Action: "+v.d})),...SAMPLES.map(r=>({t:r.t,type:"Rubric",lvl:SHORT[r.b],inst:"all",url:"#book"+r.b,d:r.d}))];
+  return [...v,...PRINTABLES,...liveSkills().map(s=>({t:"Teaching "+s.t.toLowerCase(),type:"Lesson guide",lvl:bookLbl(s.books),inst:"all",url:s.ready?"#"+s.id:SKILL_URL[s.id],d:s.d})),...TEACHING.map(v=>({t:v.t,type:"Video",lvl:bookLbl(v.books),inst:"all",url:"https://youtu.be/"+v.yt,d:"Teaching in Action: "+v.d})),...SAMPLES.map(r=>({t:r.t,type:"Rubric",lvl:SHORT[r.b],inst:"all",url:"#"+levelOf(r.b).id,d:r.d}))];
 }
 function card(x){
   const ext=x.url.startsWith("http");
@@ -259,7 +264,7 @@ function home(){
   <div class="hero">
     <div>
       <h1>Free lessons, videos and printables for string orchestra teachers</h1>
-      <p class="lead">Everything here is free to use in your classroom, organized by method book: tutorial and demonstration videos, practice tracks, printables and rubrics.</p>
+      <p class="lead">Everything here is free to use in your classroom, organized by level and method book: tutorial and demonstration videos, practice tracks, printables and rubrics.</p>
       <form class="search" id="hs" role="search"><input id="q" type="search" placeholder="Try “vibrato”, “rhythm” or “cello”" aria-label="Search all resources"><button class="btn">Search</button></form>
     </div>
     <svg class="hero-seal" role="img" aria-label="StringEducation.org seal"  viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><defs><path id="r900L" d="M50.16 88.30 A38.3 38.3 0 0 1 36.75 14.06"/><path id="r900R" d="M49.84 11.70 A38.3 38.3 0 0 1 63.25 85.94"/></defs>
@@ -268,8 +273,8 @@ function home(){
 <g transform="translate(16.67,-15.52) scale(0.8160)" style="color:#FFFFFF"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path stroke-width="2.00" d="M30.7 24.1 L37.2 43.8"/><path stroke-width="3.13" d="M37.2 43.8 C31 44 25.2 47.2 24.9 54.4 C24.7 60 26.6 64.2 28.8 67.8 C33.9 70.8 34.4 80.6 31.3 84.6 C30.3 85.9 28.9 86.5 28.6 87.6 C26.5 96 26.4 106 30.5 112 C34 117.5 41 120.6 51.4 120.6"/><path stroke-width="2.25" d="M16.4 53.2 C16.1 59 17.9 63.6 20.6 68 C25.1 72.2 25.9 82 23.7 87.4 C22.9 89 21.1 89.8 20.3 91 C17.6 100 16.9 110 22 117 C25.4 121.8 30 124.6 35.2 125.4"/><path stroke-width="2.13" d="M48 126.6 L51 136.5"/></g><text x="40.5" y="73.5" font-family="DM Serif Display" font-size="31.9" fill="#FFFFFF">S</text><text x="40.5" y="107.9" font-family="DM Serif Display" font-size="31.9" fill="#FFFFFF">E</text></g></svg>
   </div>
   <div id="results" class="results" hidden></div>
-  <section aria-labelledby="start"><div class="sec-head"><div><h2 id="start">Where are your students?</h2><p>Pick the book your class is working in: Habits of a Successful Young String Musician Books 1 and 2, the Middle Level book, or Book 4. Each book gathers its videos, practice tracks, resources, skills and assessments, whichever method you teach from.</p></div></div>
-  <div class="paths">${METHOD.map(m=>`<a class="path" href="#book${m.n}"><span class="k">${esc(m.pace)}</span><h3>${esc(m.title)}</h3><p>${esc(cap(m.skills.slice(0,3).join(", ")))}.</p><span class="count">Open ${esc(m.short)} →</span></a>`).join("")}</div></section>
+  <section aria-labelledby="start"><div class="sec-head"><div><h2 id="start">Where are your students?</h2><p>Pick your students’ level. Each page gathers its videos, practice tracks, resources, skills and rubrics, whichever method you teach from, and you can narrow it to one book.</p></div></div>
+  <div class="paths" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">${LEVELS.map(L=>`<a class="path" href="#${L.id}"><span class="k">${esc(L.pace)}</span><h3>${esc(L.title)}</h3><p>${esc(L.lead)}</p><p class="muted" style="font-size:.9rem">Matches <i>${esc(L.series)}</i>.</p><span class="count">Open ${esc(L.nav)} →</span></a>`).join("")}</div></section>
   <section aria-labelledby="more"><div class="sec-head"><h2 id="more">Across all books</h2></div>
   <div class="grid">
     <a class="path" href="#videos"><span class="k">Watch</span><h3>Music theory videos</h3><p>Tutorials for every unit of Music Theory for the Successful String Musician.</p><span class="count">${VIDEO_COUNT} videos →</span></a>
@@ -279,7 +284,7 @@ function home(){
   <section aria-labelledby="inst"><div class="sec-head"><div><h2 id="inst">Browse by instrument</h2><p>Student parts and guides for each section of your orchestra.</p></div></div>
   <div class="chips">${Object.keys(INST).map(k=>`<a class="chip t-${k}" style="text-decoration:none;border-color:currentColor" href="#printables" data-inst="${k}">${INST[k]}</a>`).join("")}</div></section>
   <section aria-labelledby="new"><div class="sec-head"><div><h2 id="new">Good places to start</h2><p>A lesson guide, a printable and a video to try first.</p></div></div>
-  <div class="grid">${card({t:"Teaching vibrato",type:"Lesson guide",lvl:"Book 2, Middle Level",inst:"all",url:"#vibrato",d:SKILLS[6].d})}${card(PRINTABLES[0])}${card({t:"Introduction to Key Signatures",type:"Video",lvl:"Book 1",inst:"all",url:YT("8K2Xvsdnz1k"),d:"Music Theory Book 1, Unit 10"})}</div></section>`;
+  <div class="grid">${card({t:"Teaching vibrato",type:"Lesson guide",lvl:bookLbl([2,3,4]),inst:"all",url:"#vibrato",d:SKILLS[6].d})}${card(PRINTABLES[0])}${card({t:"Introduction to Key Signatures",type:"Video",lvl:"Book 1",inst:"all",url:YT("8K2Xvsdnz1k"),d:"Music Theory Book 1, Unit 10"})}</div></section>`;
   document.getElementById("hs").addEventListener("submit",e=>{e.preventDefault();runSearch(document.getElementById("q").value)});
   app.querySelectorAll("[data-inst]").forEach(a=>a.addEventListener("click",()=>{state.inst=a.dataset.inst}));
 }
@@ -310,10 +315,11 @@ const liveSkills=()=>SKILLS.filter(s=>s.ready||SKILL_URL[s.id]);
 // Add videos like: {t:"Teaching the bow hold with straws",yt:"VIDEO_ID",books:[1],skill:"bow",min:4,d:"One-sentence description."}
 const TEACHING=[];
 function skills(){
-  const list=liveSkills().filter(s=>!skBook||s.books.includes(skBook));
-  const books=[0,1,2,3,4].filter(n=>!n||liveSkills().some(s=>s.books.includes(n)));
+  const inLvl=(s,i)=>!i||LEVELS[i-1].books.some(n=>s.books.includes(n));
+  const list=liveSkills().filter(s=>inLvl(s,skBook));
+  const books=[0,1,2].filter(i=>!i||liveSkills().some(s=>inLvl(s,i)));
   app.innerHTML=`<h1>Teach a skill</h1><p class="lead muted" style="margin-top:12px;max-width:40em">Every skill in one place, across all four books: the steps, what to check, and what to do when it goes wrong.</p>
-  <div class="tabs" role="group" aria-label="Filter by book">${books.map(n=>`<button class="chip" aria-pressed="${n===skBook}" data-sk="${n}">${n?SHORT[n]:"All books"}</button>`).join("")}</div>
+  <div class="tabs" role="group" aria-label="Filter by level">${books.map(i=>`<button class="chip" aria-pressed="${i===skBook}" data-sk="${i}">${i?LEVELS[i-1].nav:"All levels"}</button>`).join("")}</div>
   <div class="grid" style="margin-top:16px">${list.map(skillCard).join("")}</div>`;
   app.querySelectorAll("[data-sk]").forEach(b=>b.addEventListener("click",()=>{skBook=+b.dataset.sk;skills()}));
 }
@@ -326,32 +332,44 @@ function teaching(){
   <div class="grid" style="margin-top:24px">${TEACHING.map(teachCard).join("")}</div>`;
 }
 const G2='style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr))"';
-function bookPage(n){
-  const m=METHOD[n-1];
-  const res=PRINTABLES.filter(x=>x.lvl===SHORT[n]||x.lvl==="All books");
-  const sk=liveSkills().filter(s=>s.books.includes(n)), rb=SAMPLES.filter(r=>r.b===n), tv=TEACHING.filter(v=>v.books.includes(n));
-  const chips=m.vids?`<div class="chips">${Object.entries(m.vids).map(([k,id])=>`<a class="chip t-${k}" style="text-decoration:none;border-color:currentColor" target="_blank" rel="noopener" href="${GIA+id}">${INST[k]} →</a>`).join("")}</div>`:"";
+const lvBook={foundations:0,advancing:0};
+function levelPage(id,only){
+  const L=LEVELS.find(x=>x.id===id);
+  if(only!==undefined)lvBook[id]=only;
+  const f=lvBook[id], bk=f?[f]:L.books, ms=bk.map(n=>METHOD[n-1]);
+  const tag=n=>`<span class="tag lvl" style="margin-right:6px">${esc(SHORT[n])}</span>`;
+  const res=PRINTABLES.filter(x=>x.lvl==="All books"||bk.some(n=>x.lvl===SHORT[n]));
+  const sk=liveSkills().filter(s=>bk.some(n=>s.books.includes(n))), rb=SAMPLES.filter(r=>bk.includes(r.b)), tv=TEACHING.filter(v=>bk.some(n=>v.books.includes(n)));
   const S=[];
   if(tv.length)S.push(["b-teach","Teaching in Action",`<div class="grid" ${G2}>${tv.map(teachCard).join("")}</div>`]);
-  if(m.vids){
-    S.push(["b-tut","Tutorial videos",`<p class="muted" style="margin-bottom:12px">Clinic videos for each instrument from <i>${esc(m.series)}</i>, free on the publisher’s site.</p>${chips}`]);
-    S.push(["b-demo","Professional demonstration videos",`<p class="muted" style="margin-bottom:12px">Every exercise played by a professional on each instrument, with and without accompaniment. These are on the same pages as the tutorials.</p>${chips}`]);
-  }
-  if(m.hs)S.push(["b-acc","Exercise accompaniments",`<p class="muted" style="margin-bottom:12px">Free play-along tracks for every exercise.</p><a class="btn ghost" target="_blank" rel="noopener" href="${m.hs}">Accompaniments on habitsstrings.com →</a>`]);
-  else if(m.mm)S.push(["b-acc","Practice tracks",`<p class="muted" style="margin-bottom:12px">Interactive practice tracks for this book are available with a MakeMusic Cloud subscription.</p><a class="btn ghost" target="_blank" rel="noopener" href="${m.mm}">Practice tracks on MakeMusic Cloud (subscription) →</a>`]);
+  const vm=ms.filter(m=>m.vids);
+  if(vm.length)S.push(["b-tut","Tutorial and demonstration videos",`<p class="muted" style="margin-bottom:12px">Clinic videos for each instrument, plus every exercise played by a professional with and without accompaniment. Free on the publisher’s site.</p>${vm.map(m=>`<div style="margin-bottom:12px">${bk.length>1?`<p style="font-weight:700;margin-bottom:6px">${esc(m.short)}</p>`:""}<div class="chips">${Object.entries(m.vids).map(([k,id])=>`<a class="chip t-${k}" style="text-decoration:none;border-color:currentColor" target="_blank" rel="noopener" href="${GIA+id}">${INST[k]} →</a>`).join("")}</div></div>`).join("")}`]);
+  const hm=ms.filter(m=>m.hs), mm=ms.filter(m=>m.mm);
+  if(hm.length)S.push(["b-acc","Exercise accompaniments",`<p class="muted" style="margin-bottom:12px">Free play-along tracks for every exercise.</p><div class="chips">${hm.map(m=>`<a class="btn ghost" target="_blank" rel="noopener" href="${m.hs}">${esc(m.short)} accompaniments on habitsstrings.com →</a>`).join("")}</div>`]);
+  if(mm.length)S.push(["b-acc","Practice tracks",`<p class="muted" style="margin-bottom:12px">Interactive practice tracks for these books are available with a MakeMusic Cloud subscription.</p><div class="chips">${mm.map(m=>`<a class="btn ghost" target="_blank" rel="noopener" href="${m.mm}">${esc(m.short)} on MakeMusic Cloud (subscription) →</a>`).join("")}</div>`]);
   if(res.length)S.push(["b-res","Resources",`<div class="grid" ${G2}>${res.map(card).join("")}</div>`]);
   if(sk.length)S.push(["b-skill","Teach a skill",`<div class="grid" ${G2}>${sk.map(skillCard).join("")}</div>`]);
-  if(rb.length)S.push(["b-assess","Sample rubrics",`<p class="muted" style="margin-bottom:12px">Ready-made rubrics on the 6-to-3 scale. Open one in the rubric creator to adjust it and print it.</p><div class="grid" ${G2}>${rb.map(sampleCard).join("")}</div>`]);
-  S.push(["b-create","Rubric creator",creatorHTML(n)]);
-  app.innerHTML=`<p class="muted" style="font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:.8rem">${esc(m.pace)}</p>
-  <h1>${esc(m.title)}</h1><p style="margin-top:8px">${lvlTag(LEVEL[n]+" level")}</p><p class="muted" style="margin-top:6px">Level reference: <i>${esc(m.series)}</i></p>
-  <p class="lead muted" style="margin-top:12px;max-width:44em">For classes working on ${esc(m.short)} skills in any method series. Typical skills: ${esc(m.skills.join(", "))}.</p>
-  <div class="layout" style="margin-top:24px">
+  if(rb.length)S.push(["b-assess","Sample rubrics",`<p class="muted" style="margin-bottom:12px">Ready-made rubrics on the 6-to-3 scale, with criteria written for each book. Open one in the rubric creator to adjust it and print it.</p><div class="grid" ${G2}>${rb.map(sampleCard).join("")}</div>`]);
+  S.push(["b-create","Rubric creator",`${bk.length>1?`<div class="tabs" role="group" aria-label="Rubric creator book" style="margin-top:0">${bk.map(n=>`<button class="chip" data-crb="${n}">${esc(SHORT[n])}</button>`).join("")}</div>`:""}<div id="cr-wrap"></div>`]);
+  const skl=[...new Set(ms.flatMap(m=>m.skills))];
+  app.innerHTML=`<p class="muted" style="font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:.8rem">${esc(L.pace)}</p>
+  <h1>${esc(L.title)}</h1><p class="muted" style="margin-top:6px">Matches <i>${esc(L.series)}</i></p>
+  <p class="lead muted" style="margin-top:12px;max-width:44em">For classes at this level in any method series. Typical skills: ${esc(skl.join(", "))}.</p>
+  <div class="tabs" role="group" aria-label="Show one book">${[0,...L.books].map(n=>`<button class="chip" aria-pressed="${n===f}" data-lvb="${n}">${n?esc(SHORT[n]):"Both books"}</button>`).join("")}</div>
+  <div class="layout" style="margin-top:16px">
   <aside class="toc"><b>On this page</b><ol>${S.map(s=>`<li><a href="#${s[0]}">${s[1]}</a></li>`).join("")}</ol></aside>
   <div class="article">${S.map(s=>`<h2 id="${s[0]}">${s[1]}</h2>${s[2]}`).join("")}</div></div>`;
-  const ps=pendingSample&&pendingSample.b===n?pendingSample:null;pendingSample=null;
-  wireCreator(n,ps);wireSamples(app);
+  app.querySelectorAll("[data-lvb]").forEach(b=>b.addEventListener("click",()=>{levelPage(id,+b.dataset.lvb)}));
+  const ps=pendingSample&&bk.includes(pendingSample.b)?pendingSample:null;pendingSample=null;
+  showCreator(ps?ps.b:bk[0],ps);
+  app.querySelectorAll("[data-crb]").forEach(b=>b.addEventListener("click",()=>showCreator(+b.dataset.crb)));
+  wireSamples(app);
   if(ps)setTimeout(()=>document.getElementById("b-create").scrollIntoView(),0);
+}
+function showCreator(n,preset){
+  const w=document.getElementById("cr-wrap");if(!w)return;
+  w.innerHTML=creatorHTML(n);wireCreator(n,preset);
+  app.querySelectorAll("[data-crb]").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.crb===n)));
 }
 
 function vibrato(){
@@ -359,7 +377,7 @@ function vibrato(){
   app.innerHTML=`<p><a href="#skills">← Teach a skill</a></p>
   <div class="layout" style="margin-top:12px">
   <aside class="toc"><b>On this page</b><ol><li><a href="#v-uv">Violin and viola</a></li><li><a href="#v-uvc">Checkpoints</a></li><li><a href="#v-ut">Troubleshooting</a></li><li><a href="#v-cb">Cello and bass</a></li><li><a href="#v-cbc">Checkpoints</a></li><li><a href="#v-egg">Egg shakers</a></li></ol>
-  <div class="meta" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:16px">${lvlTag("Book 2, Middle Level")}${instTag("violin")}${instTag("viola")}${instTag("cello")}${instTag("bass")}</div></aside>
+  <div class="meta" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:16px">${lvlTag(bookLbl([2,3,4]))}${instTag("violin")}${instTag("viola")}${instTag("cello")}${instTag("bass")}</div></aside>
   <article class="article">
   <h1>Teaching vibrato</h1>
   <p class="intro">Build the motion away from the bow first, then in playing position, then add long bows with no rhythm until both arms can do two different things at once.</p>
@@ -395,8 +413,8 @@ function printables(){
 
 function assessment(){
   app.innerHTML=`<h1>Assessment</h1><p class="lead muted" style="margin-top:12px;max-width:40em">Every rubric uses one 6-to-3 scale (6 Excellent, 5 Minor problem, 4 Significant problem, 3 Multiple problems) and criteria written for each book. They work with any method book. Open a sample to adjust and print it, or build your own with the rubric creator for each level.</p>
-  ${[1,2,3,4].map(n=>`<section><div class="sec-head"><h2>${LVL(n)}</h2><a class="btn ghost" href="#book${n}">${LEVEL[n]} rubric creator →</a></div><div class="grid">${SAMPLES.filter(r=>r.b===n).map(sampleCard).join("")}</div></section>`).join("")}`;
-  app.querySelectorAll("[data-sample]").forEach(a=>{const s=SAMPLES[+a.dataset.sample];a.setAttribute("href","#book"+s.b);a.addEventListener("click",()=>{pendingSample=s})});
+  ${LEVELS.map(L=>`<section><div class="sec-head"><div><h2>${esc(L.title)}</h2><p>${esc(L.books_lbl)}</p></div><a class="btn ghost" href="#${L.id}">${esc(L.nav)} rubric creator →</a></div>${L.books.map(n=>`<h3 style="margin:16px 0 10px">${esc(SHORT[n])}</h3><div class="grid">${SAMPLES.filter(r=>r.b===n).map(sampleCard).join("")}</div>`).join("")}</section>`).join("")}`;
+  app.querySelectorAll("[data-sample]").forEach(a=>{const s=SAMPLES[+a.dataset.sample];a.setAttribute("href","#"+levelOf(s.b).id);a.addEventListener("click",()=>{pendingSample=s;lvBook[levelOf(s.b).id]=0})});
 }
 function about(){
   app.innerHTML=`<h1>About</h1>
@@ -501,18 +519,18 @@ const BANK={
 };
 const TECH={1:["posture","lefthand","bowhand"],2:["lhpos","bowhand"],3:["technique"],4:["technique"]};
 const SAMPLES=[
- {b:1,t:"Beginning Playing Test",d:"Full beginner test: posture, left hand and bow hold graded separately.",cats:["posture","lefthand","bowhand","intonation","rhythm","tone"]},
- {b:1,t:"Beginning Homework Check",d:"Quick check of the three musical basics for a short exercise.",cats:["intonation","rhythm","tone"]},
- {b:1,t:"Beginning Bow Hold and Position Check",d:"Technique-only check for the first months, before reading music.",cats:["posture","lefthand","bowhand"]},
- {b:2,t:"Developing Playing Test",d:"Left hand and instrument position as one row, bow hold as its own row.",cats:["lhpos","bowhand","intonation","rhythm","tone","bowing"]},
- {b:2,t:"Developing Homework Check",d:"Quick check of rhythm, intonation and tone.",cats:["intonation","rhythm","tone"]},
- {b:2,t:"Developing Section Playing Test",d:"For a section or small group playing an excerpt together.",cats:["intonation","rhythm","tone","ensemble"]},
- {b:3,t:"Intermediate Playing Test",d:"Technique as one row, plus the core musical categories.",cats:["technique","intonation","rhythm","tone","bowing"]},
- {b:3,t:"Intermediate Scale Test",d:"Scales and arpeggios, with 4th and 7th scale degrees and shifting under Intonation.",cats:["technique","intonation","rhythm","tone"]},
- {b:3,t:"Intermediate Homework Check",d:"Rhythm, intonation and tone on an assigned excerpt.",cats:["intonation","rhythm","tone"]},
- {b:4,t:"Advanced Solo Performance",d:"Full solo rubric with musical execution and style.",cats:["technique","intonation","rhythm","tone","bowing","musical"]},
- {b:4,t:"Advanced Excerpt Test",d:"Orchestral excerpt test on rhythm, intonation and tone.",cats:["intonation","rhythm","tone"]},
- {b:4,t:"Advanced Ensemble Performance",d:"For sections or chamber groups: musical categories plus ensemble skills.",cats:["intonation","rhythm","tone","musical","ensemble"]},
+ {b:1,t:"Book 1 Playing Test",d:"Full beginner test: posture, left hand and bow hold graded separately.",cats:["posture","lefthand","bowhand","intonation","rhythm","tone"]},
+ {b:1,t:"Book 1 Homework Check",d:"Quick check of the three musical basics for a short exercise.",cats:["intonation","rhythm","tone"]},
+ {b:1,t:"Book 1 Bow Hold and Position Check",d:"Technique-only check for the first months, before reading music.",cats:["posture","lefthand","bowhand"]},
+ {b:2,t:"Book 2 Playing Test",d:"Left hand and instrument position as one row, bow hold as its own row.",cats:["lhpos","bowhand","intonation","rhythm","tone","bowing"]},
+ {b:2,t:"Book 2 Homework Check",d:"Quick check of rhythm, intonation and tone.",cats:["intonation","rhythm","tone"]},
+ {b:2,t:"Book 2 Section Playing Test",d:"For a section or small group playing an excerpt together.",cats:["intonation","rhythm","tone","ensemble"]},
+ {b:3,t:"Middle Level Playing Test",d:"Technique as one row, plus the core musical categories.",cats:["technique","intonation","rhythm","tone","bowing"]},
+ {b:3,t:"Middle Level Scale Test",d:"Scales and arpeggios, with 4th and 7th scale degrees and shifting under Intonation.",cats:["technique","intonation","rhythm","tone"]},
+ {b:3,t:"Middle Level Homework Check",d:"Rhythm, intonation and tone on an assigned excerpt.",cats:["intonation","rhythm","tone"]},
+ {b:4,t:"Book 4 Solo Performance",d:"Full solo rubric with musical execution and style.",cats:["technique","intonation","rhythm","tone","bowing","musical"]},
+ {b:4,t:"Book 4 Excerpt Test",d:"Orchestral excerpt test on rhythm, intonation and tone.",cats:["intonation","rhythm","tone"]},
+ {b:4,t:"Book 4 Ensemble Performance",d:"For sections or chamber groups: musical categories plus ensemble skills.",cats:["intonation","rhythm","tone","musical","ensemble"]},
  {b:4,t:"Wind Players in Orchestra",d:"For string teachers grading winds in full orchestra, on the same 6-to-3 scale.",cats:["wtone","wpitch","wrhythm","wartic"]}
 ];
 const catsFor=n=>Object.keys(BANK).filter(k=>BANK[k].books.includes(n));
@@ -533,7 +551,7 @@ function creatorHTML(n){
   const groups=[["Technique",TECH[n]],["Musical categories",["intonation","rhythm","tone","bowing","musical","ensemble"].filter(k=>BANK[k].books.includes(n))]];
   if(n===4)groups.push(["Wind players in orchestra",["wtone","wpitch","wrhythm","wartic"]]);
   return `<div class="creator" id="cr-${n}">
-  <p class="muted" style="margin-bottom:14px">Tick the categories you want to grade. Every row uses the same 6-to-3 scale and the criteria for ${esc(LEVEL[n].toLowerCase())} players. It works with any method book. You can click any text in the rubric to change it before you print.</p>
+  <p class="muted" style="margin-bottom:14px">Tick the categories you want to grade. Every row uses the same 6-to-3 scale and the criteria written for ${esc(SHORT[n])}. It works with any method book. You can click any text in the rubric to change it before you print.</p>
   <div class="cr-controls">
    <label class="cr-title">Rubric title<input type="text" data-k="title"></label>
    ${groups.map(g=>`<fieldset><legend>${g[0]}</legend>${g[1].map(k=>`<label><input type="checkbox" data-cat="${k}"> ${esc(BANK[k].n)}</label>`).join("")}</fieldset>`).join("")}
@@ -544,7 +562,7 @@ function creatorHTML(n){
 }
 function wireCreator(n,preset){
   const root=document.getElementById("cr-"+n);if(!root)return;
-  const st=RB[n]=RB[n]||{title:LEVEL[n].replace(" high school","")+" Playing Test",cats:[...TECH[n],"intonation","rhythm","tone"],crit:true,lines:true,comm:true};
+  const st=RB[n]=RB[n]||{title:SHORT[n]+" Playing Test",cats:[...TECH[n],"intonation","rhythm","tone"],crit:true,lines:true,comm:true};
   if(preset){st.title=preset.t;st.cats=[...preset.cats]}
   const draw=()=>{root.querySelector(".cr-out").innerHTML=st.cats.length?rubricHTML(n,st):`<p class="muted">Tick at least one category to see the rubric.</p>`;
     root.querySelector(".cr-count").textContent=st.cats.length?`${st.cats.length} categories · ${st.cats.length*6} points`:"";
@@ -599,12 +617,12 @@ async function saveDocx(sheet,title){
 }
 const sampleCard=s=>`<article class="card"><span class="type">Sample rubric</span><h3>${esc(s.t)}</h3><p class="muted">${esc(s.d)}</p><div class="meta">${lvlTag(LVL(s.b))}<span class="tag t-all">${s.cats.length*6} points</span></div><a class="go" href="#b-create" data-sample="${SAMPLES.indexOf(s)}">Open in the rubric creator →</a></article>`;
 function wireSamples(scope){scope.querySelectorAll("[data-sample]").forEach(a=>a.addEventListener("click",e=>{const s=SAMPLES[+a.dataset.sample];
-  if(!document.getElementById("cr-"+s.b)){RB[s.b]=null;pendingSample=s;return}
-  e.preventDefault();wireCreator(s.b,s);document.getElementById("b-create").scrollIntoView({behavior:"smooth"})}))}
+  if(!document.getElementById("cr-wrap")){pendingSample=s;return}
+  e.preventDefault();showCreator(s.b,s);document.getElementById("b-create").scrollIntoView({behavior:"smooth"})}))}
 let pendingSample=null;
 
-const ROUTES={home,teaching,videos,skills,vibrato,printables,assessment,about,book1:()=>bookPage(1),book2:()=>bookPage(2),book3:()=>bookPage(3),book4:()=>bookPage(4)};
-const NAV={teaching:"teaching",book1:"book1",book2:"book2",book3:"book3",book4:"book4",videos:"videos",skills:"skills",vibrato:"skills",printables:"printables",assessment:"assessment",about:"about"};
+const ROUTES={home,teaching,videos,skills,vibrato,printables,assessment,about,foundations:()=>levelPage("foundations"),advancing:()=>levelPage("advancing"),beginning:()=>levelPage("foundations"),advanced:()=>levelPage("advancing"),book1:()=>levelPage("foundations",1),book2:()=>levelPage("foundations",2),book3:()=>levelPage("advancing",3),book4:()=>levelPage("advancing",4)};
+const NAV={teaching:"teaching",foundations:"foundations",advancing:"advancing",beginning:"foundations",advanced:"advancing",book1:"foundations",book2:"foundations",book3:"advancing",book4:"advancing",videos:"videos",skills:"skills",vibrato:"skills",printables:"printables",assessment:"assessment",about:"about"};
 function route(){
   const r=(location.hash||"#home").slice(1);
   if(r.startsWith("v-")||r.startsWith("b-"))return;
