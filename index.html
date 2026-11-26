@@ -343,7 +343,7 @@ function levelPage(id,only){
   const S=[];
   if(tv.length)S.push(["b-teach","Teaching in Action",`<div class="grid" ${G2}>${tv.map(teachCard).join("")}</div>`]);
   const vm=ms.filter(m=>m.vids);
-  if(vm.length)S.push(["b-tut","Tutorial and demonstration videos",`<p class="muted" style="margin-bottom:12px">Clinic videos for each instrument, plus every exercise played by a professional with and without accompaniment. Free on the publisher’s site.</p>${vm.map(m=>`<div style="margin-bottom:12px">${bk.length>1?`<p style="font-weight:700;margin-bottom:6px">${esc(m.short)}</p>`:""}<div class="chips">${Object.entries(m.vids).map(([k,id])=>`<a class="chip t-${k}" style="text-decoration:none;border-color:currentColor" target="_blank" rel="noopener" href="${GIA+id}">${INST[k]} →</a>`).join("")}</div></div>`).join("")}`]);
+  if(vm.length)S.push(["b-tut","Tutorial and demonstration videos",`<p class="muted" style="margin-bottom:12px">Clinic videos for each instrument, plus every exercise from <i>${esc(L.series)}</i> played by a professional with and without accompaniment.</p>${vm.map(m=>`<div style="margin-bottom:12px">${bk.length>1?`<p style="font-weight:700;margin-bottom:6px">${esc(m.short)}</p>`:""}<div class="chips">${Object.entries(m.vids).map(([k,id])=>`<a class="chip t-${k}" style="text-decoration:none;border-color:currentColor" target="_blank" rel="noopener" href="${GIA+id}">${INST[k]} →</a>`).join("")}</div></div>`).join("")}`]);
   const hm=ms.filter(m=>m.hs), mm=ms.filter(m=>m.mm);
   if(hm.length)S.push(["b-acc","Exercise accompaniments",`<p class="muted" style="margin-bottom:12px">Free play-along tracks for every exercise.</p><div class="chips">${hm.map(m=>`<a class="btn ghost" target="_blank" rel="noopener" href="${m.hs}">${esc(m.short)} accompaniments on habitsstrings.com →</a>`).join("")}</div>`]);
   if(mm.length)S.push(["b-acc","Practice tracks",`<p class="muted" style="margin-bottom:12px">Interactive practice tracks for these books are available with a MakeMusic Cloud subscription.</p><div class="chips">${mm.map(m=>`<a class="btn ghost" target="_blank" rel="noopener" href="${m.mm}">${esc(m.short)} on MakeMusic Cloud (subscription) →</a>`).join("")}</div>`]);
@@ -352,7 +352,7 @@ function levelPage(id,only){
   if(rb.length)S.push(["b-assess","Sample rubrics",`<p class="muted" style="margin-bottom:12px">Ready-made rubrics on the 6-to-3 scale, with criteria written for each book. Open one in the rubric creator to adjust it and print it.</p><div class="grid" ${G2}>${rb.map(sampleCard).join("")}</div>`]);
   S.push(["b-create","Rubric creator",`${bk.length>1?`<div class="tabs" role="group" aria-label="Rubric creator book" style="margin-top:0">${bk.map(n=>`<button class="chip" data-crb="${n}">${esc(SHORT[n])}</button>`).join("")}</div>`:""}<div id="cr-wrap"></div>`]);
   const skl=[...new Set(ms.flatMap(m=>m.skills))];
-  app.innerHTML=`<h1>${esc(L.title)}</h1><p class="muted" style="margin-top:6px">Matches <i>${esc(L.series)}</i></p>
+  app.innerHTML=`<h1>${esc(L.title)}</h1>
   <p class="lead muted" style="margin-top:12px;max-width:44em">For classes at this level in any method series. Typical skills: ${esc(skl.join(", "))}.</p>
   <div class="tabs" role="group" aria-label="Show one book">${[0,...L.books].map(n=>`<button class="chip" aria-pressed="${n===f}" data-lvb="${n}">${n?esc(SHORT[n]):esc(L.books_lbl)}</button>`).join("")}</div>
   <div class="layout" style="margin-top:16px">
