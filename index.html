@@ -201,6 +201,8 @@ const GD="https://drive.google.com/file/d/", GS="https://docs.google.com/present
 const NR={ex:"https://www.dropbox.com/s/6h9ej0ydcb3i3ki/Note%20Reading%20Exercises.pdf?dl=0",
  cards:[["Violin","https://www.dropbox.com/s/vgdjfgjuq74tssi/Beginning%20Violin%20Note%20Reading%20Flash%20Cards.pdf?dl=0","violin"],["Viola",GD+"0Bzvs1u295hBKYjljZjU4OWMtMWVhMC00Yzk2LTlhMDctY2E5OTNjZTMwNjRi/view","viola"],["Cello",GD+"0Bzvs1u295hBKNDhiOTk2NzctZjYyZS00YjVlLTliMWItNDdjNmI3M2Y1Mzlk/view","cello"],["Bass",GD+"0Bzvs1u295hBKNWNlYzc0OWQtMDM5Yi00Y2NjLWJlNDgtYmU0NzExNWNkNmNl/view","bass"]],
  slides:[["Open strings",GS+"1fSBqk1-nGQoMjxMtUNLB1jS4XDGN5JrIezPlgl3P0tU/edit?usp=sharing"],["D string",GS+"1k0hyoMtG_Pzod4BjZDAa6JPYHhUAQ5EywC4hedL7emU/edit?usp=sharing"],["A string",GS+"1ehlG61cn_7EKJlrDiTEzIShNgrSckNFbdZb2fG5iQGY/edit?usp=sharing"],["G string",GS+"1lD0EZbdx3BlmMff8u3UWUot-SYUjT4ILKjNuCIQ7FAo/edit?usp=sharing"]]};
+// Rhythm reading material (moved from the old Teaching Rhythm page). Files stay in Chris's Dropbox.
+const RR={ex:"https://www.dropbox.com/s/s7h4wlh5h6a8eb7/Rhythm%20Reading%20Exercises.pdf?dl=0",slides:[["Quarter notes and rests in 4/4","https://www.dropbox.com/s/oemit5jxwspoo95/Flash%20Rhythm%20Reading%20Slides.ppt?dl=0"],["Eighth notes, quarter notes and rests in 4/4","https://www.dropbox.com/s/7gv2of908xo0v83/Flash%204.4QR8.ppt?dl=0"]]};
 const PRINTABLES=[
  {t:"String Warm Ups 1: Full Score",type:"Printable",lvl:"Book 1",inst:"all",url:D+"1ZqQ0pGFtsTRUsDYXe3MSRxGguUPmc93d/view",d:"Bowing, intonation and scale warm ups, Grade I."},
  {t:"String Warm Ups 1: Violin",type:"Printable",lvl:"Book 1",inst:"violin",url:D+"1fePYJb4-I92hyB3j5ifCuPHo2wIe04W0/view",d:"Student part, Grade I."},
@@ -214,8 +216,8 @@ const PRINTABLES=[
  {t:"String Warm Ups 2: Bass",type:"Printable",lvl:"Book 2",inst:"bass",url:D+"14eqezpz3_RQoLDu5UPwA0JLqLeJwtCdQ/view",d:"Student part, Grade II."},
  {t:"Note Reading Exercises, Level 1",type:"Printable",lvl:"Book 1",inst:"all",url:NR.ex,d:"Print for students or project for the whole class."},
  {t:"Beginner Note Flash Cards",type:"Printable",lvl:"Book 1",inst:"all",url:"#theory",d:"Violin, viola, cello and bass sets, with blank staves for student-made cards."},
- {t:"Rhythm Reading Exercises",type:"Printable",lvl:"Book 1",inst:"all",url:"https://www.stringeducation.org/lessons-activities/teaching-rhythm",d:"Count, clap and play: quarter notes, eighth notes and rests in 4/4."},
- {t:"Flash Rhythm Reading Slides",type:"Slides",lvl:"Book 1",inst:"all",url:"https://www.stringeducation.org/lessons-activities/teaching-rhythm",d:"Project one rhythm at a time for whole-class reading."},
+ {t:"Rhythm Reading Exercises",type:"Printable",lvl:"Book 1",inst:"all",url:RR.ex,d:"Count, clap and play: quarter notes, eighth notes and rests in 4/4."},
+ {t:"Flash Rhythm Reading Slides",type:"Slides",lvl:"Book 1",inst:"all",url:"#theory",d:"Project one rhythm at a time for whole-class reading."},
  {t:"Instrument Parts Diagram",type:"Printable",lvl:"Book 1",inst:"all",url:"https://www.stringeducation.org/lessons-activities/instrument-history-parts-and-care",d:"Label the parts of the violin, viola, cello, bass and bow."},
  {t:"musictheory.net",type:"Website",lvl:"All books",inst:"all",url:"https://www.musictheory.net/",d:"Lessons and drills you can set to each student's instrument and level."},
  {t:"emusictheory.com",type:"Website",lvl:"All books",inst:"all",url:"http://www.emusictheory.com/practice.html",d:"Find each note on a virtual string, for any string instrument."}
@@ -318,6 +320,20 @@ function videos(){
    <div class="callout"><h3>Flash card strategies</h3>${ol(["Print the blank staff page at the end of the set. Students draw a quarter note on the front and write its name on the back, with string and finger number if you like.","Print the cards double-sided so the note names are on the back. Students cut them out and practice while you work with another section."])}</div>
    <div class="callout"><h3>Flash slide strategies</h3>${ol(["Set a metronome to a comfortable tempo.","Use the arrow keys to flash each slide.","Hide the notes while students name them.","Start by showing each note for four beats, then three, two and one as students improve. Raise the tempo for an extra challenge."])}</div>
   </div>
+  <h2 id="v-rhythm" style="margin-top:40px">Rhythm reading</h2>
+  <p class="muted" style="margin:8px 0 16px;max-width:44em">Exercises and flash slides for counting and reading rhythms, with a sequence that builds from clapping to full bowing.</p>
+  <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr))">
+   <article class="card"><span class="type">Printable</span><h3>Rhythm Reading Exercises</h3><p class="muted">Count, clap and play: quarter notes, eighth notes and rests in 4/4.</p><a class="go" target="_blank" rel="noopener" href="${RR.ex}">Open file →</a></article>
+   <article class="card"><span class="type">Slides</span><h3>Flash rhythm reading slides</h3><p class="muted">PowerPoint slide shows for whole-class rhythm reading.</p><div class="chips">${RR.slides.map(c=>ch(...c)).join("")}</div></article>
+  </div>
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr));margin-top:20px">
+   <div class="callout"><h3>As easy as 1, 2, 3</h3>${ol(["The teacher counts a full measure of steady beats with the metronome (1, 2, 3, 4).","Students count a full measure of steady beats with the metronome.","Students perform the rhythm while they keep counting the steady beat with the metronome."])}</div>
+   <div class="callout"><h3>Count out loud</h3><p>Students count out loud, with or without a metronome, while they perform the rhythm with their body or instrument. A steady pulse has to live somewhere in the body for a rhythm to make sense. Counting aloud carries students through rests and long notes, so do it especially when rhythms are hard. Once they can play while counting aloud, they can count silently.</p></div>
+   <div class="callout"><h3>Sequence of increasing difficulty</h3><p>With a metronome, counting out loud. Move up and down the list as students show mastery.</p>${ol(["Clap or pizz the rhythm on an open string.","Pizz the written notes.","Air bow the rhythm, keeping the bow moving through sustained notes.","Air bow with the correct slurs and articulations.","Play arco on an open string.","Play the notes arco without slurs and articulations.","Play the notes arco with slurs and articulations."])}</div>
+   <div class="callout"><h3>Advanced strategies</h3><p>Let students choose the level that suits them, and mix levels at once, such as violins pizz while the lower strings air bow. Counting eighth notes (1 &amp; 2 &amp;) or sixteenths (1 e &amp; a) helps with dotted rhythms, a steady pulse and rushing. Count through rests and the middle of long notes to find the “negative space.”</p></div>
+   <div class="callout"><h3>Model, but avoid teaching rhythm by repetition</h3><p>Drilling a rhythm can clean it up, but it doesn’t teach students to count and play on their own. The goal is reading familiar patterns in unfamiliar combinations, so the best time to teach rhythm reading is when students meet new music.</p></div>
+   <div class="callout"><h3>Flash slide strategies</h3><p>Use the same steps as the note reading slides: set a comfortable tempo, flash each slide, hide it while students say or play it, and shorten the time on screen from four beats down to one.</p></div>
+  </div>
   <h2 id="v-theory" style="margin-top:40px">Theory videos</h2>
   <p class="lead muted" style="margin-top:12px;max-width:40em">Short tutorials for every unit of <i>Music Theory for the Successful String Musician</i>. Assign one for homework or play it in class. These go with the theory books, separate from the method books.</p>
   <div class="tabs" role="group" aria-label="Choose a book">${[1,2].map(n=>`<button class="chip" aria-pressed="${n===book}" data-book="${n}">Book ${n}</button>`).join("")}</div>
@@ -328,7 +344,7 @@ function videos(){
 
 let skBook=0;
 const OLD="https://www.stringeducation.org/";
-const SKILL_URL={care:OLD+"lessons-activities/instrument-history-parts-and-care",posture:OLD+"lessons-activities/instrument-and-left-hand-position",bow:OLD+"lessons-activities/right-hand",rhythm:OLD+"lessons-activities/teaching-rhythm",reading:"#theory",intonation:OLD+"lessons/improving-intonation"};
+const SKILL_URL={care:OLD+"lessons-activities/instrument-history-parts-and-care",posture:OLD+"lessons-activities/instrument-and-left-hand-position",bow:OLD+"lessons-activities/right-hand",rhythm:"#theory",reading:"#theory",intonation:OLD+"lessons/improving-intonation"};
 const liveSkills=()=>SKILLS.filter(s=>s.ready||SKILL_URL[s.id]);
 // Teaching in Action: classroom videos of Chris teaching. Section stays hidden until this list has at least one video.
 // Add videos like: {t:"Teaching the bow hold with straws",yt:"VIDEO_ID",books:[1],skill:"bow",min:4,d:"One-sentence description."}
