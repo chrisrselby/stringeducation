@@ -151,7 +151,7 @@ footer .wrap{padding-block:24px;display:flex;justify-content:space-between;gap:1
 <header class="top"><div class="wrap">
   <a class="logo" href="#home" aria-label="StringEducation.org home"><svg class="lockup" viewBox="10 4 188 142" aria-hidden="true" style="color:var(--spruce)"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path stroke-width="1.6" d="M27.2 13.5 L37.2 43.8"/><path stroke-width="2.5" d="M37.2 43.8 C31 44 25.2 47.2 24.9 54.4 C24.7 60 26.6 64.2 28.8 67.8 C33.9 70.8 34.4 80.6 31.3 84.6 C30.3 85.9 28.9 86.5 28.6 87.6 C26.5 96 26.4 106 30.5 112 C34 117.5 41 120.6 51.4 120.6"/><path stroke-width="1.8" d="M16.4 53.2 C16.1 59 17.9 63.6 20.6 68 C25.1 72.2 25.9 82 23.7 87.4 C22.9 89 21.1 89.8 20.3 91 C17.6 100 16.9 110 22 117 C25.4 121.8 30 124.6 35.2 125.4"/><path stroke-width="1.7" d="M48 126.6 L52.4 141.2"/></g><text x="41" y="73.5" font-family="Playfair Display, Georgia, serif" font-weight="600" font-size="31.9" fill="currentColor">String</text><text x="41" y="107.95" font-family="Playfair Display, Georgia, serif" font-weight="600" font-size="31.9" fill="currentColor">Education</text></svg></a>
   <nav class="main" aria-label="Main">
-    <a href="#beginning">Beginning</a><a href="#advanced">Intermediate &amp; Advanced</a><a href="#videos">Theory Videos</a><a href="#skills">Teach a Skill</a><a href="#assessment">Assessment</a><a href="#about">About</a>
+    <a href="#foundations">Foundations</a><a href="#advancing">Advancing</a><a href="#videos">Theory Videos</a><a href="#skills">Teach a Skill</a><a href="#assessment">Assessment</a><a href="#about">About</a>
   </nav>
 </div></header>
 
@@ -244,8 +244,8 @@ const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
 const SHORT={1:"Book 1",2:"Book 2",3:"Middle Level",4:"Book 4"};
 // Two level pages. Each gathers its books; a book filter on the page narrows to one book.
 const LEVELS=[
- {id:"beginning",nav:"Beginning",title:"Beginning strings",books:[1,2],books_lbl:"Books 1 and 2",series:"Habits of a Successful Young String Musician, Books 1 and 2",pace:"Usually years 1 to 3",lead:"From the first day with an instrument to playing in keys, slurring and reading as a section."},
- {id:"advanced",nav:"Intermediate & Advanced",title:"Intermediate and advanced strings",books:[3,4],books_lbl:"Middle Level and Book 4",series:"Habits of a Successful Middle Level String Musician, and Habits of a Successful String Musician, 2nd Edition",pace:"Middle school through advanced high school",lead:"Shifting, vibrato, bowing styles and scales, up to advanced high school orchestra."}
+ {id:"foundations",nav:"Foundations",title:"Foundations (Books 1–2)",books:[1,2],books_lbl:"Books 1 and 2",series:"Habits of a Successful Young String Musician, Books 1 and 2",pace:"Usually years 1 to 3",lead:"From the first day with an instrument to playing in keys, slurring and reading as a section."},
+ {id:"advancing",nav:"Advancing",title:"Advancing (Middle Level & Book 4)",books:[3,4],books_lbl:"Middle Level and Book 4",series:"Habits of a Successful Middle Level String Musician, and Habits of a Successful String Musician, 2nd Edition",pace:"Middle school through advanced high school",lead:"Shifting, vibrato, bowing styles and scales, up to advanced high school orchestra."}
 ];
 const levelOf=n=>LEVELS.find(L=>L.books.includes(n));
 const LVL=n=>SHORT[n];
@@ -332,7 +332,7 @@ function teaching(){
   <div class="grid" style="margin-top:24px">${TEACHING.map(teachCard).join("")}</div>`;
 }
 const G2='style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr))"';
-const lvBook={beginning:0,advanced:0};
+const lvBook={foundations:0,advancing:0};
 function levelPage(id,only){
   const L=LEVELS.find(x=>x.id===id);
   if(only!==undefined)lvBook[id]=only;
@@ -621,8 +621,8 @@ function wireSamples(scope){scope.querySelectorAll("[data-sample]").forEach(a=>a
   e.preventDefault();showCreator(s.b,s);document.getElementById("b-create").scrollIntoView({behavior:"smooth"})}))}
 let pendingSample=null;
 
-const ROUTES={home,teaching,videos,skills,vibrato,printables,assessment,about,beginning:()=>levelPage("beginning"),advanced:()=>levelPage("advanced"),book1:()=>levelPage("beginning",1),book2:()=>levelPage("beginning",2),book3:()=>levelPage("advanced",3),book4:()=>levelPage("advanced",4)};
-const NAV={teaching:"teaching",beginning:"beginning",advanced:"advanced",book1:"beginning",book2:"beginning",book3:"advanced",book4:"advanced",videos:"videos",skills:"skills",vibrato:"skills",printables:"printables",assessment:"assessment",about:"about"};
+const ROUTES={home,teaching,videos,skills,vibrato,printables,assessment,about,foundations:()=>levelPage("foundations"),advancing:()=>levelPage("advancing"),beginning:()=>levelPage("foundations"),advanced:()=>levelPage("advancing"),book1:()=>levelPage("foundations",1),book2:()=>levelPage("foundations",2),book3:()=>levelPage("advancing",3),book4:()=>levelPage("advancing",4)};
+const NAV={teaching:"teaching",foundations:"foundations",advancing:"advancing",beginning:"foundations",advanced:"advancing",book1:"foundations",book2:"foundations",book3:"advancing",book4:"advancing",videos:"videos",skills:"skills",vibrato:"skills",printables:"printables",assessment:"assessment",about:"about"};
 function route(){
   const r=(location.hash||"#home").slice(1);
   if(r.startsWith("v-")||r.startsWith("b-"))return;
