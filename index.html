@@ -245,11 +245,11 @@ const SHORT={1:"Book 1",2:"Book 2",3:"Middle Level",4:"Upper Level"};
 // Two level pages. Each gathers its books; a book filter on the page narrows to one book.
 const LEVELS=[
  {id:"foundations",nav:"Foundations",title:"Foundations (Books 1–2)",books:[1,2],books_lbl:"Books 1 and 2",series:"Habits of a Successful Young String Musician, Books 1 and 2",pace:"Usually years 1 to 3",lead:"From the first day with an instrument to playing in keys, slurring and reading as a section."},
- {id:"advancing",nav:"Advancing",title:"Advancing (Books 3–4)",books:[3,4],books_lbl:"Books 3 and 4 (Middle Level and Upper Level)",series:"Habits of a Successful Middle Level String Musician, and Habits of a Successful String Musician, 2nd Edition",pace:"Middle school through advanced high school",lead:"Shifting, vibrato, bowing styles and scales, up to advanced high school orchestra."}
+ {id:"advancing",nav:"Advancing",title:"Advancing (Middle and Upper Level)",books:[3,4],books_lbl:"Middle and Upper Level",series:"Habits of a Successful Middle Level String Musician, and Habits of a Successful String Musician, 2nd Edition",pace:"Middle school through advanced high school",lead:"Shifting, vibrato, bowing styles and scales, up to advanced high school orchestra."}
 ];
 const levelOf=n=>LEVELS.find(L=>L.books.includes(n));
 const LVL=n=>SHORT[n];
-const bookLbl=a=>{if(a.length===4)return "All books";const b=a.filter(n=>n<3).map(n=>SHORT[n]),o=a.filter(n=>n>=3).map(n=>SHORT[n]);const parts=[...(b.length===2?["Books 1–2"]:b),...(o.length===2?["Middle Level & Upper Level"]:o)];return parts.join(", ")};
+const bookLbl=a=>{if(a.length===4)return "All books";const b=a.filter(n=>n<3).map(n=>SHORT[n]),o=a.filter(n=>n>=3).map(n=>SHORT[n]);const parts=[...(b.length===2?["Books 1–2"]:b),...(o.length===2?["Middle and Upper Level"]:o)];return parts.join(", ")};
 function allItems(){
   const v=[];BOOKS.forEach(b=>b.units.forEach(u=>u[2].forEach(x=>v.push({t:x[0],type:"Video",lvl:"Theory Book "+b.book,inst:"all",url:YT(x[1]),d:`Music Theory Book ${b.book}, Unit ${u[0]}: ${u[1]}`}))));
   return [...v,...PRINTABLES,...liveSkills().map(s=>({t:"Teaching "+s.t.toLowerCase(),type:"Lesson guide",lvl:bookLbl(s.books),inst:"all",url:s.ready?"#"+s.id:SKILL_URL[s.id],d:s.d})),...TEACHING.map(v=>({t:v.t,type:"Video",lvl:bookLbl(v.books),inst:"all",url:"https://youtu.be/"+v.yt,d:"Teaching in Action: "+v.d})),...SAMPLES.map(r=>({t:r.t,type:"Rubric",lvl:SHORT[r.b],inst:"all",url:"#"+levelOf(r.b).id,d:r.d}))];
@@ -355,7 +355,7 @@ function levelPage(id,only){
   app.innerHTML=`<p class="muted" style="font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:.8rem">${esc(L.pace)}</p>
   <h1>${esc(L.title)}</h1><p class="muted" style="margin-top:6px">Matches <i>${esc(L.series)}</i></p>
   <p class="lead muted" style="margin-top:12px;max-width:44em">For classes at this level in any method series. Typical skills: ${esc(skl.join(", "))}.</p>
-  <div class="tabs" role="group" aria-label="Show one book">${[0,...L.books].map(n=>`<button class="chip" aria-pressed="${n===f}" data-lvb="${n}">${n?esc(SHORT[n]):"Both books"}</button>`).join("")}</div>
+  <div class="tabs" role="group" aria-label="Show one book">${[0,...L.books].map(n=>`<button class="chip" aria-pressed="${n===f}" data-lvb="${n}">${n?esc(SHORT[n]):esc(L.books_lbl)}</button>`).join("")}</div>
   <div class="layout" style="margin-top:16px">
   <aside class="toc"><b>On this page</b><ol>${S.map(s=>`<li><a href="#${s[0]}">${s[1]}</a></li>`).join("")}</ol></aside>
   <div class="article">${S.map(s=>`<h2 id="${s[0]}">${s[1]}</h2>${s[2]}`).join("")}</div></div>`;
