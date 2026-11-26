@@ -195,25 +195,24 @@ const BOOKS=[
   [26,"Minor Scales",[["Major and Natural Minor","efeuF4IBCG0"],["Harmonic Minor Scales","qjKd4XrW7ow"],["Melodic Minor Scales","QSbR-bTEff0"]]]]}
 ];
 const VIDEO_COUNT=BOOKS.reduce((n,b)=>n+b.units.reduce((m,u)=>m+u[2].length,0),0);
-const D="https://drive.google.com/file/d/";
-// Note reading material (moved from the old Reading Notes page). Files stay in Chris's Dropbox / Google Drive.
-const GD="https://drive.google.com/file/d/", GS="https://docs.google.com/presentation/d/";
-const NR={ex:"https://www.dropbox.com/s/6h9ej0ydcb3i3ki/Note%20Reading%20Exercises.pdf?dl=0",
- cards:[["Violin","https://www.dropbox.com/s/vgdjfgjuq74tssi/Beginning%20Violin%20Note%20Reading%20Flash%20Cards.pdf?dl=0","violin"],["Viola",GD+"0Bzvs1u295hBKYjljZjU4OWMtMWVhMC00Yzk2LTlhMDctY2E5OTNjZTMwNjRi/view","viola"],["Cello",GD+"0Bzvs1u295hBKNDhiOTk2NzctZjYyZS00YjVlLTliMWItNDdjNmI3M2Y1Mzlk/view","cello"],["Bass",GD+"0Bzvs1u295hBKNWNlYzc0OWQtMDM5Yi00Y2NjLWJlNDgtYmU0NzExNWNkNmNl/view","bass"]],
- slides:[["Open strings",GS+"1fSBqk1-nGQoMjxMtUNLB1jS4XDGN5JrIezPlgl3P0tU/edit?usp=sharing"],["D string",GS+"1k0hyoMtG_Pzod4BjZDAa6JPYHhUAQ5EywC4hedL7emU/edit?usp=sharing"],["A string",GS+"1ehlG61cn_7EKJlrDiTEzIShNgrSckNFbdZb2fG5iQGY/edit?usp=sharing"],["G string",GS+"1lD0EZbdx3BlmMff8u3UWUot-SYUjT4ILKjNuCIQ7FAo/edit?usp=sharing"]]};
-// Rhythm reading material (moved from the old Teaching Rhythm page). Files stay in Chris's Dropbox.
-const RR={ex:"https://www.dropbox.com/s/s7h4wlh5h6a8eb7/Rhythm%20Reading%20Exercises.pdf?dl=0",slides:[["Quarter notes and rests in 4/4","https://www.dropbox.com/s/oemit5jxwspoo95/Flash%20Rhythm%20Reading%20Slides.ppt?dl=0"],["Eighth notes, quarter notes and rests in 4/4","https://www.dropbox.com/s/7gv2of908xo0v83/Flash%204.4QR8.ppt?dl=0"]]};
+// Note reading material (moved from the old Reading Notes page). Files live in this site under files/.
+const F="files/";
+const NR={ex:F+"note-reading/note-reading-exercises-level-1.pdf",
+ cards:[["Violin",F+"note-reading/note-flash-cards-violin.pdf","violin"],["Viola",F+"note-reading/note-flash-cards-viola.pdf","viola"],["Cello",F+"note-reading/note-flash-cards-cello.pdf","cello"],["Bass",F+"note-reading/note-flash-cards-bass.pdf","bass"]],
+ slides:[["Open strings",F+"note-reading/note-reading-slides-open-strings.pdf"],["D string",F+"note-reading/note-reading-slides-d-string.pdf"],["A string",F+"note-reading/note-reading-slides-a-string.pdf"],["G string",F+"note-reading/note-reading-slides-g-string.pdf"]]};
+// Rhythm reading material (moved from the old Teaching Rhythm page). Files live under files/; the eighth-note deck is still on Dropbox until Chris supplies a copy.
+const RR={ex:F+"rhythm-reading/rhythm-reading-exercises.pdf",slides:[["Quarter notes and rests in 4/4",F+"rhythm-reading/flash-rhythm-slides-quarter-notes-4-4.pdf"],["Eighth notes, quarter notes and rests in 4/4","https://www.dropbox.com/s/7gv2of908xo0v83/Flash%204.4QR8.ppt?dl=0"]]};
 const PRINTABLES=[
- {t:"String Warm Ups 1: Full Score",type:"Printable",lvl:"Book 1",inst:"all",url:D+"1ZqQ0pGFtsTRUsDYXe3MSRxGguUPmc93d/view",d:"Bowing, intonation and scale warm ups, Grade I."},
- {t:"String Warm Ups 1: Violin",type:"Printable",lvl:"Book 1",inst:"violin",url:D+"1fePYJb4-I92hyB3j5ifCuPHo2wIe04W0/view",d:"Student part, Grade I."},
- {t:"String Warm Ups 1: Viola",type:"Printable",lvl:"Book 1",inst:"viola",url:D+"1rKlJxgoGIvdSeOESr6hnwWc7r30TWFPI/view",d:"Student part, Grade I."},
- {t:"String Warm Ups 1: Cello",type:"Printable",lvl:"Book 1",inst:"cello",url:D+"1CeF9IEI7le4UJqC4RRGdrr6k7zVmdDxe/view",d:"Student part, Grade I."},
- {t:"String Warm Ups 1: Bass",type:"Printable",lvl:"Book 1",inst:"bass",url:D+"10UPpwF9nDHPFaGx3hoAKbT-_Cryy0JHt/view",d:"Student part, Grade I."},
- {t:"String Warm Ups 2: Full Score",type:"Printable",lvl:"Book 2",inst:"all",url:D+"1zIAVXDzxwM_DlCJAuLJ_CTVx3EyqnXS7/view",d:"Intermediate warm ups, Grade II. Leads into Habits of a Successful Middle Level String Musician."},
- {t:"String Warm Ups 2: Violin",type:"Printable",lvl:"Book 2",inst:"violin",url:D+"1PFAEuszCHt-IOGLODd68wU6tCVeune2r/view",d:"Student part, Grade II."},
- {t:"String Warm Ups 2: Viola",type:"Printable",lvl:"Book 2",inst:"viola",url:D+"1ZZSRQ12UfQaWI90JS7VZ9fKwIGa-Deej/view",d:"Student part, Grade II."},
- {t:"String Warm Ups 2: Cello",type:"Printable",lvl:"Book 2",inst:"cello",url:D+"1hd8YJtDzaZxalhPbcdx9JZqo3OZUwVt-/view",d:"Student part, Grade II."},
- {t:"String Warm Ups 2: Bass",type:"Printable",lvl:"Book 2",inst:"bass",url:D+"14eqezpz3_RQoLDu5UPwA0JLqLeJwtCdQ/view",d:"Student part, Grade II."},
+ {t:"String Warm Ups 1: Full Score",type:"Printable",lvl:"Book 1",inst:"all",url:F+"warm-ups/string-warm-ups-1-full-score.pdf",d:"Bowing, intonation and scale warm ups, Grade I."},
+ {t:"String Warm Ups 1: Violin",type:"Printable",lvl:"Book 1",inst:"violin",url:F+"warm-ups/string-warm-ups-1-violin.pdf",d:"Student part, Grade I."},
+ {t:"String Warm Ups 1: Viola",type:"Printable",lvl:"Book 1",inst:"viola",url:F+"warm-ups/string-warm-ups-1-viola.pdf",d:"Student part, Grade I."},
+ {t:"String Warm Ups 1: Cello",type:"Printable",lvl:"Book 1",inst:"cello",url:F+"warm-ups/string-warm-ups-1-cello.pdf",d:"Student part, Grade I."},
+ {t:"String Warm Ups 1: Bass",type:"Printable",lvl:"Book 1",inst:"bass",url:F+"warm-ups/string-warm-ups-1-bass.pdf",d:"Student part, Grade I."},
+ {t:"String Warm Ups 2: Full Score",type:"Printable",lvl:"Book 2",inst:"all",url:F+"warm-ups/string-warm-ups-2-full-score.pdf",d:"Intermediate warm ups, Grade II. Leads into Habits of a Successful Middle Level String Musician."},
+ {t:"String Warm Ups 2: Violin",type:"Printable",lvl:"Book 2",inst:"violin",url:F+"warm-ups/string-warm-ups-2-violin.pdf",d:"Student part, Grade II."},
+ {t:"String Warm Ups 2: Viola",type:"Printable",lvl:"Book 2",inst:"viola",url:F+"warm-ups/string-warm-ups-2-viola.pdf",d:"Student part, Grade II."},
+ {t:"String Warm Ups 2: Cello",type:"Printable",lvl:"Book 2",inst:"cello",url:F+"warm-ups/string-warm-ups-2-cello.pdf",d:"Student part, Grade II."},
+ {t:"String Warm Ups 2: Bass",type:"Printable",lvl:"Book 2",inst:"bass",url:F+"warm-ups/string-warm-ups-2-bass.pdf",d:"Student part, Grade II."},
  {t:"Note Reading Exercises, Level 1",type:"Printable",lvl:"Book 1",inst:"all",url:NR.ex,d:"Print for students or project for the whole class."},
  {t:"Beginner Note Flash Cards",type:"Printable",lvl:"Book 1",inst:"all",url:"#theory",d:"Violin, viola, cello and bass sets, with blank staves for student-made cards."},
  {t:"Rhythm Reading Exercises",type:"Printable",lvl:"Book 1",inst:"all",url:RR.ex,d:"Count, clap and play: quarter notes, eighth notes and rests in 4/4."},
@@ -324,7 +323,7 @@ function videos(){
   <p class="muted" style="margin:8px 0 16px;max-width:44em">Exercises and flash slides for counting and reading rhythms, with a sequence that builds from clapping to full bowing.</p>
   <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr))">
    <article class="card"><span class="type">Printable</span><h3>Rhythm Reading Exercises</h3><p class="muted">Count, clap and play: quarter notes, eighth notes and rests in 4/4.</p><a class="go" target="_blank" rel="noopener" href="${RR.ex}">Open file →</a></article>
-   <article class="card"><span class="type">Slides</span><h3>Flash rhythm reading slides</h3><p class="muted">PowerPoint slide shows for whole-class rhythm reading.</p><div class="chips">${RR.slides.map(c=>ch(...c)).join("")}</div></article>
+   <article class="card"><span class="type">Slides</span><h3>Flash rhythm reading slides</h3><p class="muted">Slide shows for whole-class rhythm reading.</p><div class="chips">${RR.slides.map(c=>ch(...c)).join("")}</div></article>
   </div>
   <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr));margin-top:20px">
    <div class="callout"><h3>As easy as 1, 2, 3</h3>${ol(["The teacher counts a full measure of steady beats with the metronome (1, 2, 3, 4).","Students count a full measure of steady beats with the metronome.","Students perform the rhythm while they keep counting the steady beat with the metronome."])}</div>
