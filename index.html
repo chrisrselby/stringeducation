@@ -197,12 +197,12 @@ const BOOKS=[
 const VIDEO_COUNT=BOOKS.reduce((n,b)=>n+b.units.reduce((m,u)=>m+u[2].length,0),0);
 const D="https://drive.google.com/file/d/";
 const PRINTABLES=[
- {t:"String Warm Ups 1: Full score",type:"Printable",lvl:"Book 1",inst:"all",url:D+"1ZqQ0pGFtsTRUsDYXe3MSRxGguUPmc93d/view",d:"Bowing, intonation and scale warm ups, Grade I."},
+ {t:"String Warm Ups 1: Full Score",type:"Printable",lvl:"Book 1",inst:"all",url:D+"1ZqQ0pGFtsTRUsDYXe3MSRxGguUPmc93d/view",d:"Bowing, intonation and scale warm ups, Grade I."},
  {t:"String Warm Ups 1: Violin",type:"Printable",lvl:"Book 1",inst:"violin",url:D+"1fePYJb4-I92hyB3j5ifCuPHo2wIe04W0/view",d:"Student part, Grade I."},
  {t:"String Warm Ups 1: Viola",type:"Printable",lvl:"Book 1",inst:"viola",url:D+"1rKlJxgoGIvdSeOESr6hnwWc7r30TWFPI/view",d:"Student part, Grade I."},
  {t:"String Warm Ups 1: Cello",type:"Printable",lvl:"Book 1",inst:"cello",url:D+"1CeF9IEI7le4UJqC4RRGdrr6k7zVmdDxe/view",d:"Student part, Grade I."},
  {t:"String Warm Ups 1: Bass",type:"Printable",lvl:"Book 1",inst:"bass",url:D+"10UPpwF9nDHPFaGx3hoAKbT-_Cryy0JHt/view",d:"Student part, Grade I."},
- {t:"String Warm Ups 2: Full score",type:"Printable",lvl:"Book 2",inst:"all",url:D+"1zIAVXDzxwM_DlCJAuLJ_CTVx3EyqnXS7/view",d:"Intermediate warm ups, Grade II. Leads into Habits of a Successful Middle Level String Musician."},
+ {t:"String Warm Ups 2: Full Score",type:"Printable",lvl:"Book 2",inst:"all",url:D+"1zIAVXDzxwM_DlCJAuLJ_CTVx3EyqnXS7/view",d:"Intermediate warm ups, Grade II. Leads into Habits of a Successful Middle Level String Musician."},
  {t:"String Warm Ups 2: Violin",type:"Printable",lvl:"Book 2",inst:"violin",url:D+"1PFAEuszCHt-IOGLODd68wU6tCVeune2r/view",d:"Student part, Grade II."},
  {t:"String Warm Ups 2: Viola",type:"Printable",lvl:"Book 2",inst:"viola",url:D+"1ZZSRQ12UfQaWI90JS7VZ9fKwIGa-Deej/view",d:"Student part, Grade II."},
  {t:"String Warm Ups 2: Cello",type:"Printable",lvl:"Book 2",inst:"cello",url:D+"1hd8YJtDzaZxalhPbcdx9JZqo3OZUwVt-/view",d:"Student part, Grade II."},
@@ -349,7 +349,7 @@ function levelPage(id,only){
   if(vm.length)S.push(["b-ex","Professionals perform each exercise",`<p class="muted" style="margin-bottom:12px">Free videos of every exercise from <i>${esc(L.series)}</i> played by a professional with and without accompaniment.</p>${vm.map(m=>vchips(m,"")).join("")}`]);
   if(hm.length)S.push(["b-acc","Accompaniment tracks",`<p class="muted" style="margin-bottom:12px">Free play-along tracks for every exercise, on habitsstrings.com.</p><div class="chips">${hm.map(m=>`<a class="btn ghost" target="_blank" rel="noopener" href="${m.hs}">${esc(m.short)} →</a>`).join("")}</div>`]);
   if(mm.length)S.push(["b-acc","Practice tracks",`<p class="muted" style="margin-bottom:12px">Interactive practice tracks for these books are available with a MakeMusic Cloud subscription.</p><div class="chips">${mm.map(m=>`<a class="btn ghost" target="_blank" rel="noopener" href="${m.mm}">${esc(m.short)} on MakeMusic Cloud (subscription) →</a>`).join("")}</div>`]);
-  if(res.length)S.push(["b-res","Resources",`<div class="grid" ${G2}>${res.map(card).join("")}</div>`]);
+  if(res.length)S.push(["b-res","Resources",`<div class="grid" ${G2}>${groupParts(res).map(x=>x.parts?partsCard(x):card(x)).join("")}</div>`]);
   if(sk.length)S.push(["b-skill","Teach a skill",`<div class="grid" ${G2}>${sk.map(skillCard).join("")}</div>`]);
   if(rb.length)S.push(["b-assess","Sample rubrics",`<p class="muted" style="margin-bottom:12px">Ready-made rubrics on the 6-to-3 scale, with criteria written for each book. Open one in the rubric creator to adjust it and print it.</p><div class="grid" ${G2}>${rb.map(sampleCard).join("")}</div>`]);
   S.push(["b-create","Rubric creator",`${bk.length>1?`<div class="tabs" role="group" aria-label="Rubric creator book" style="margin-top:0">${bk.map(n=>`<button class="chip" data-crb="${n}">${esc(SHORT[n])}</button>`).join("")}</div>`:""}<div id="cr-wrap"></div>`]);
@@ -367,6 +367,13 @@ function levelPage(id,only){
   wireSamples(app);
   if(ps)setTimeout(()=>document.getElementById("b-create").scrollIntoView(),0);
 }
+// Items titled "Name: Part" (e.g. "String Warm Ups 1: Violin") become one card with a button per part.
+function groupParts(list){const out=[],g={};
+  list.forEach(x=>{const m=x.t.match(/^(String Warm Ups \d+): (.+)$/);if(!m){out.push(x);return}
+    if(!g[m[1]]){g[m[1]]={t:m[1],type:x.type,lvl:x.lvl,d:"",parts:[]};out.push(g[m[1]])}
+    if(x.inst==="all")g[m[1]].d=x.d;g[m[1]].parts.push([m[2],x.url,x.inst])});
+  return out}
+const partsCard=x=>`<article class="card"><span class="type">${esc(x.type)}</span><h3>${esc(x.t)}</h3><p class="muted">${esc(x.d)}</p><div class="meta">${lvlTag(x.lvl)}</div><div class="chips">${x.parts.map(([n,u,i])=>`<a class="chip t-${i}" style="text-decoration:none;border-color:currentColor" target="_blank" rel="noopener" href="${esc(u)}">${esc(n)}</a>`).join("")}</div></article>`;
 function showCreator(n,preset){
   const w=document.getElementById("cr-wrap");if(!w)return;
   w.innerHTML=creatorHTML(n);wireCreator(n,preset);
