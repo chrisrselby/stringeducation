@@ -196,6 +196,11 @@ const BOOKS=[
 ];
 const VIDEO_COUNT=BOOKS.reduce((n,b)=>n+b.units.reduce((m,u)=>m+u[2].length,0),0);
 const D="https://drive.google.com/file/d/";
+// Note reading material (moved from the old Reading Notes page). Files stay in Chris's Dropbox / Google Drive.
+const GD="https://drive.google.com/file/d/", GS="https://docs.google.com/presentation/d/";
+const NR={ex:"https://www.dropbox.com/s/6h9ej0ydcb3i3ki/Note%20Reading%20Exercises.pdf?dl=0",
+ cards:[["Violin","https://www.dropbox.com/s/vgdjfgjuq74tssi/Beginning%20Violin%20Note%20Reading%20Flash%20Cards.pdf?dl=0","violin"],["Viola",GD+"0Bzvs1u295hBKYjljZjU4OWMtMWVhMC00Yzk2LTlhMDctY2E5OTNjZTMwNjRi/view","viola"],["Cello",GD+"0Bzvs1u295hBKNDhiOTk2NzctZjYyZS00YjVlLTliMWItNDdjNmI3M2Y1Mzlk/view","cello"],["Bass",GD+"0Bzvs1u295hBKNWNlYzc0OWQtMDM5Yi00Y2NjLWJlNDgtYmU0NzExNWNkNmNl/view","bass"]],
+ slides:[["Open strings",GS+"1fSBqk1-nGQoMjxMtUNLB1jS4XDGN5JrIezPlgl3P0tU/edit?usp=sharing"],["D string",GS+"1k0hyoMtG_Pzod4BjZDAa6JPYHhUAQ5EywC4hedL7emU/edit?usp=sharing"],["A string",GS+"1ehlG61cn_7EKJlrDiTEzIShNgrSckNFbdZb2fG5iQGY/edit?usp=sharing"],["G string",GS+"1lD0EZbdx3BlmMff8u3UWUot-SYUjT4ILKjNuCIQ7FAo/edit?usp=sharing"]]};
 const PRINTABLES=[
  {t:"String Warm Ups 1: Full Score",type:"Printable",lvl:"Book 1",inst:"all",url:D+"1ZqQ0pGFtsTRUsDYXe3MSRxGguUPmc93d/view",d:"Bowing, intonation and scale warm ups, Grade I."},
  {t:"String Warm Ups 1: Violin",type:"Printable",lvl:"Book 1",inst:"violin",url:D+"1fePYJb4-I92hyB3j5ifCuPHo2wIe04W0/view",d:"Student part, Grade I."},
@@ -207,8 +212,8 @@ const PRINTABLES=[
  {t:"String Warm Ups 2: Viola",type:"Printable",lvl:"Book 2",inst:"viola",url:D+"1ZZSRQ12UfQaWI90JS7VZ9fKwIGa-Deej/view",d:"Student part, Grade II."},
  {t:"String Warm Ups 2: Cello",type:"Printable",lvl:"Book 2",inst:"cello",url:D+"1hd8YJtDzaZxalhPbcdx9JZqo3OZUwVt-/view",d:"Student part, Grade II."},
  {t:"String Warm Ups 2: Bass",type:"Printable",lvl:"Book 2",inst:"bass",url:D+"14eqezpz3_RQoLDu5UPwA0JLqLeJwtCdQ/view",d:"Student part, Grade II."},
- {t:"Note Reading Exercises, Level 1",type:"Printable",lvl:"Book 1",inst:"all",url:"https://www.stringeducation.org/music-theory-for-the-successful-string-musician/reading-notes",d:"Print for students or project for the whole class."},
- {t:"Beginner Note Flash Cards",type:"Printable",lvl:"Book 1",inst:"all",url:"https://www.stringeducation.org/music-theory-for-the-successful-string-musician/reading-notes",d:"Violin, viola, cello and bass sets, with blank staves for student-made cards."},
+ {t:"Note Reading Exercises, Level 1",type:"Printable",lvl:"Book 1",inst:"all",url:NR.ex,d:"Print for students or project for the whole class."},
+ {t:"Beginner Note Flash Cards",type:"Printable",lvl:"Book 1",inst:"all",url:"#theory",d:"Violin, viola, cello and bass sets, with blank staves for student-made cards."},
  {t:"Rhythm Reading Exercises",type:"Printable",lvl:"Book 1",inst:"all",url:"https://www.stringeducation.org/lessons-activities/teaching-rhythm",d:"Count, clap and play: quarter notes, eighth notes and rests in 4/4."},
  {t:"Flash Rhythm Reading Slides",type:"Slides",lvl:"Book 1",inst:"all",url:"https://www.stringeducation.org/lessons-activities/teaching-rhythm",d:"Project one rhythm at a time for whole-class reading."},
  {t:"Instrument Parts Diagram",type:"Printable",lvl:"Book 1",inst:"all",url:"https://www.stringeducation.org/lessons-activities/instrument-history-parts-and-care",d:"Label the parts of the violin, viola, cello, bass and bow."},
@@ -299,7 +304,21 @@ function runSearch(q){
 let book=1;
 function videos(){
   const b=BOOKS.find(x=>x.book===book);
+  const ch=(l,u,c)=>`<a class="chip${c?" t-"+c:""}" style="text-decoration:none;border-color:currentColor" target="_blank" rel="noopener" href="${u}">${esc(l)} →</a>`;
+  const ol=a=>`<ol class="steps" style="margin-top:10px">${a.map(x=>`<li><span>${x}</span></li>`).join("")}</ol>`;
   app.innerHTML=`<h1>Theory &amp; Literacy</h1>
+  <h2 id="v-notes" style="margin-top:28px">Note reading</h2>
+  <p class="muted" style="margin:8px 0 16px;max-width:44em">Exercises, flash cards and flash slides to print for students or project for the whole class.</p>
+  <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr))">
+   <article class="card"><span class="type">Printable</span><h3>Note Reading Exercises, Level 1</h3><p class="muted">Print for students or project for the whole class.</p><a class="go" target="_blank" rel="noopener" href="${NR.ex}">Open file →</a></article>
+   <article class="card"><span class="type">Printable</span><h3>Beginner note flash cards</h3><p class="muted">One set for each instrument, with a blank staff page at the end for student-made cards.</p><div class="chips">${NR.cards.map(c=>ch(...c)).join("")}</div></article>
+   <article class="card"><span class="type">Slides</span><h3>Flash note reading slides</h3><p class="muted">Slide shows for quick note recognition, one string at a time.</p><div class="chips">${NR.slides.map(c=>ch(...c)).join("")}</div></article>
+  </div>
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr));margin-top:20px">
+   <div class="callout"><h3>Flash card strategies</h3>${ol(["Print the blank staff page at the end of the set. Students draw a quarter note on the front and write its name on the back, with string and finger number if you like.","Print the cards double-sided so the note names are on the back. Students cut them out and practice while you work with another section."])}</div>
+   <div class="callout"><h3>Flash slide strategies</h3>${ol(["Set a metronome to a comfortable tempo.","Use the arrow keys to flash each slide.","Hide the notes while students name them.","Start by showing each note for four beats, then three, two and one as students improve. Raise the tempo for an extra challenge."])}</div>
+  </div>
+  <h2 id="v-theory" style="margin-top:40px">Theory videos</h2>
   <p class="lead muted" style="margin-top:12px;max-width:40em">Short tutorials for every unit of <i>Music Theory for the Successful String Musician</i>. Assign one for homework or play it in class. These go with the theory books, separate from the method books.</p>
   <div class="tabs" role="group" aria-label="Choose a book">${[1,2].map(n=>`<button class="chip" aria-pressed="${n===book}" data-book="${n}">Book ${n}</button>`).join("")}</div>
   <div style="margin-top:16px">${b.units.map(u=>`<div class="unit"><div class="unit-head"><span class="unit-num">${u[0]}</span><h3>${esc(u[1])}</h3></div><ul class="vids">${u[2].map(v=>`<li><a href="${YT(v[1])}" target="_blank" rel="noopener"><span class="play" aria-hidden="true"></span>${esc(v[0])}</a></li>`).join("")}</ul></div>`).join("")}</div>
@@ -309,7 +328,7 @@ function videos(){
 
 let skBook=0;
 const OLD="https://www.stringeducation.org/";
-const SKILL_URL={care:OLD+"lessons-activities/instrument-history-parts-and-care",posture:OLD+"lessons-activities/instrument-and-left-hand-position",bow:OLD+"lessons-activities/right-hand",rhythm:OLD+"lessons-activities/teaching-rhythm",reading:OLD+"music-theory-for-the-successful-string-musician/reading-notes",intonation:OLD+"lessons/improving-intonation"};
+const SKILL_URL={care:OLD+"lessons-activities/instrument-history-parts-and-care",posture:OLD+"lessons-activities/instrument-and-left-hand-position",bow:OLD+"lessons-activities/right-hand",rhythm:OLD+"lessons-activities/teaching-rhythm",reading:"#theory",intonation:OLD+"lessons/improving-intonation"};
 const liveSkills=()=>SKILLS.filter(s=>s.ready||SKILL_URL[s.id]);
 // Teaching in Action: classroom videos of Chris teaching. Section stays hidden until this list has at least one video.
 // Add videos like: {t:"Teaching the bow hold with straws",yt:"VIDEO_ID",books:[1],skill:"bow",min:4,d:"One-sentence description."}
@@ -323,7 +342,7 @@ function skills(){
   <div class="grid" style="margin-top:16px">${list.map(skillCard).join("")}</div>`;
   app.querySelectorAll("[data-sk]").forEach(b=>b.addEventListener("click",()=>{skBook=+b.dataset.sk;skills()}));
 }
-const skillCard=s=>{const href=s.ready?"#"+s.id:SKILL_URL[s.id];const ext=!s.ready;
+const skillCard=s=>{const href=s.ready?"#"+s.id:SKILL_URL[s.id];const ext=href.startsWith("http");
   return `<article class="card"><span class="type">Lesson guide</span><h3>${esc(s.t)}</h3><p class="muted">${esc(s.d)}</p><div class="meta">${lvlTag(bookLbl(s.books))}</div><a class="go" href="${href}"${ext?' target="_blank" rel="noopener"':""}>Open guide →</a></article>`};
 const teachCard=v=>`<article class="card"><span class="type">Teaching in Action · ${v.min} min</span><h3>${esc(v.t)}</h3><p class="muted">${esc(v.d)}</p><div class="meta">${lvlTag(bookLbl(v.books))}</div><a class="go" href="https://youtu.be/${v.yt}" target="_blank" rel="noopener">Watch →</a></article>`;
 function teaching(){
