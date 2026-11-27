@@ -227,10 +227,10 @@ const PRINTABLES=[
  {t:"String Warm Ups 2: Viola",type:"Printable",lvl:"Book 2",inst:"viola",url:F+"warm-ups/string-warm-ups-2-viola.pdf",d:"Student part, Grade II."},
  {t:"String Warm Ups 2: Cello",type:"Printable",lvl:"Book 2",inst:"cello",url:F+"warm-ups/string-warm-ups-2-cello.pdf",d:"Student part, Grade II."},
  {t:"String Warm Ups 2: Bass",type:"Printable",lvl:"Book 2",inst:"bass",url:F+"warm-ups/string-warm-ups-2-bass.pdf",d:"Student part, Grade II."},
- {t:"Note Reading Exercises, Level 1",type:"Printable",lvl:"Book 1",inst:"all",url:NR.ex,d:"Print for students or project for the whole class."},
- {t:"Beginner Note Flash Cards",type:"Printable",lvl:"Book 1",inst:"all",url:"#theory",d:"Violin, viola, cello and bass sets, with blank staves for student-made cards."},
- {t:"Rhythm Reading Exercises",type:"Printable",lvl:"Book 1",inst:"all",url:RR.ex,d:"Count, clap and play: quarter notes, eighth notes and rests in 4/4."},
- {t:"Flash Rhythm Reading Slides",type:"Slides",lvl:"Book 1",inst:"all",url:"#theory",d:"Project one rhythm at a time for whole-class reading."},
+ {t:"Note Reading Exercises, Level 1",lit:1,type:"Printable",lvl:"Book 1",inst:"all",url:NR.ex,d:"Print for students or project for the whole class."},
+ {t:"Beginner Note Flash Cards",lit:1,type:"Printable",lvl:"Book 1",inst:"all",url:"#theory",d:"Violin, viola, cello and bass sets, with blank staves for student-made cards."},
+ {t:"Rhythm Reading Exercises",lit:1,type:"Printable",lvl:"Book 1",inst:"all",url:RR.ex,d:"Count, clap and play: quarter notes, eighth notes and rests in 4/4."},
+ {t:"Flash Rhythm Reading Slides",lit:1,type:"Slides",lvl:"Book 1",inst:"all",url:"#theory",d:"Project one rhythm at a time for whole-class reading."},
  {t:"Instrument Parts Diagram",type:"Printable",lvl:"Book 1",inst:"all",url:F+"parts-and-care/instrument-parts-diagram.pdf",d:"Label the parts of the violin, viola, cello, bass and bow."},
  {t:"Caring for Your Instrument",type:"Printable",lvl:"Book 1",inst:"all",url:F+"parts-and-care/caring-for-your-instrument.pdf",d:"Care rules to review at home with parents, plus the steps for unpacking and packing the instrument."}
 ];
@@ -417,7 +417,7 @@ function levelPage(id,only){
   const vm=ms.filter(m=>m.vids);
   const vchips=(m,frag)=>`<div style="margin-bottom:12px">${bk.length>1?`<p style="font-weight:700;margin-bottom:6px">${esc(m.short)}</p>`:""}<div class="chips">${Object.entries(m.vids).map(([k,id])=>`<a class="chip t-${k}" style="text-decoration:none;border-color:currentColor" target="_blank" rel="noopener" href="${GIA+id+frag}">${INST[k]} →</a>`).join("")}</div></div>`;
   if(vm.length)S.push(["b-tut","Clinic videos",`<p class="muted" style="margin-bottom:12px">Free clinic videos for each instrument addressing Instrument Position, Left Hand, Right Hand, Tone Production, Shifting, Vibrato and more.</p>${vm.map(m=>vchips(m,"#tab=clinics")).join("")}`]);
-  if(res.length)S.push(["b-res","Resources",`<div class="grid" ${G2}>${groupParts(res).map(x=>x.parts?partsCard(x):card(x)).join("")}</div>`]);
+  if(res.length)S.push(["b-res","Resources",`<div class="grid" ${G2}>${litBox(groupParts(res)).map(x=>x.parts?partsCard(x):x.litBox?x.html:card(x)).join("")}</div>`]);
   const hm=ms.filter(m=>m.hs), mm=ms.filter(m=>m.mm);
   if(vm.length)S.push(["b-ex","Professionals perform each exercise",`<p class="muted" style="margin-bottom:12px">Free videos of every exercise from <i>${esc(L.series)}</i> played by a professional with and without accompaniment.</p>${vm.map(m=>vchips(m,"")).join("")}`]);
   if(hm.length)S.push(["b-acc","Accompaniment tracks",`<p class="muted" style="margin-bottom:12px">Free play-along tracks for every exercise, on habitsstrings.com.</p><div class="chips">${hm.map(m=>`<a class="btn ghost" target="_blank" rel="noopener" href="${m.hs}">${esc(m.short)} →</a>`).join("")}</div>`]);
@@ -440,13 +440,21 @@ function levelPage(id,only){
   wireSamples(app);
   if(ps)setTimeout(()=>document.getElementById("b-create").scrollIntoView(),0);
 }
+// Card titles that replace the file-set name (Chris, 2026-11-27). The title names the book, so the card shows no book tag.
+const PART_TITLES={"String Warm Ups 1":{t:"Grade 1 Bowing, Intonation and Scale Warm Ups for Book 1",d:"Full score and student parts for violin, viola, cello and bass."},
+ "String Warm Ups 2":{t:"Grade 2 Bowing, Intonation and Scale Warm Ups for Book 2",d:"Full score and student parts for violin, viola, cello and bass."}};
+// Reading printables (lit:1) live on Literacy & Creativity; level pages show one card that points there (Chris, 2026-11-27).
+function litBox(list){const i=list.findIndex(x=>x.lit);if(i<0)return list;
+  const box={litBox:1,html:`<article class="card"><span class="type">Printables and slides</span><h3>Note and Rhythm Reading</h3><p class="muted">Note reading exercises, note flash cards, rhythm reading exercises and flash rhythm slides, all on the Literacy &amp; Creativity page.</p><a class="go" href="#theory">Go to Literacy &amp; Creativity →</a></article>`};
+  const out=list.filter(x=>!x.lit);out.splice(i,0,box);return out}
 // Items titled "Name: Part" (e.g. "String Warm Ups 1: Violin") become one card with a button per part.
 function groupParts(list){const out=[],g={};
   list.forEach(x=>{const m=x.t.match(/^(String Warm Ups \d+): (.+)$/);if(!m){out.push(x);return}
-    if(!g[m[1]]){g[m[1]]={t:m[1],type:x.type,lvl:x.lvl,d:"",parts:[]};out.push(g[m[1]])}
-    if(x.inst==="all")g[m[1]].d=x.d;g[m[1]].parts.push([m[2],x.url,x.inst])});
+    const o=PART_TITLES[m[1]];
+    if(!g[m[1]]){g[m[1]]={t:o?o.t:m[1],type:x.type,lvl:x.lvl,d:o?o.d:"",noTag:!!o,parts:[]};out.push(g[m[1]])}
+    if(x.inst==="all"&&!o)g[m[1]].d=x.d;g[m[1]].parts.push([m[2],x.url,x.inst])});
   return out}
-const partsCard=x=>`<article class="card"><span class="type">${esc(x.type)}</span><h3>${esc(x.t)}</h3><p class="muted">${esc(x.d)}</p><div class="meta">${lvlTag(x.lvl)}</div><div class="chips">${x.parts.map(([n,u,i])=>`<a class="chip t-${i}" style="text-decoration:none;border-color:currentColor" target="_blank" rel="noopener" href="${esc(u)}">${esc(n)}</a>`).join("")}</div></article>`;
+const partsCard=x=>`<article class="card"><span class="type">${esc(x.type)}</span><h3>${esc(x.t)}</h3><p class="muted">${esc(x.d)}</p>${x.noTag?"":`<div class="meta">${lvlTag(x.lvl)}</div>`}<div class="chips">${x.parts.map(([n,u,i])=>`<a class="chip t-${i}" style="text-decoration:none;border-color:currentColor" target="_blank" rel="noopener" href="${esc(u)}">${esc(n)}</a>`).join("")}</div></article>`;
 function showCreator(n,preset){
   const w=document.getElementById("cr-wrap");if(!w)return;
   w.innerHTML=creatorHTML(n);wireCreator(n,preset);
@@ -514,6 +522,25 @@ function assessment(){
   app.innerHTML=`<h1>Assessment</h1><p class="lead muted" style="margin-top:12px;max-width:40em">Every rubric uses one 6-to-3 scale (6 Excellent, 5 Minor problem, 4 Significant problem, 3 Multiple problems) and criteria written for each book. They work with any method book. Open a sample to adjust and print it, or build your own with the rubric creator for each level.</p>
   ${LEVELS.map(L=>`<section><div class="sec-head"><div><h2>${esc(L.title)}</h2><p>${esc(L.books_lbl)}</p></div><a class="btn ghost" href="#${L.id}">${esc(L.nav)} rubric creator →</a></div>${L.books.map(n=>`<h3 style="margin:16px 0 10px">${esc(SHORT[n])}</h3><div class="grid">${SAMPLES.filter(r=>r.b===n).map(sampleCard).join("")}</div>`).join("")}</section>`).join("")}`;
   app.querySelectorAll("[data-sample]").forEach(a=>{const s=SAMPLES[+a.dataset.sample];a.setAttribute("href","#"+levelOf(s.b).id);a.addEventListener("click",()=>{pendingSample=s;lvBook[levelOf(s.b).id]=0})});
+  const ck=document.createElement("section");ck.innerHTML=`<div class="sec-head"><div><h2 id="checklists">Student checklists</h2><p>Quick yes/no checks students use on themselves and each other, alongside the teacher's rubric.</p></div></div>
+  <h3 style="margin:16px 0 6px">${esc(TONE_CHECK.t)}</h3><p class="muted" style="max-width:44em;margin-bottom:10px">${esc(TONE_CHECK.d)}</p>
+  <div style="overflow-x:auto">${checklistHTML(TONE_CHECK)}</div>
+  <p style="margin-top:12px"><button class="btn" data-act="print-check">Print checklist</button></p>`;
+  app.append(ck);
+  ck.querySelector('[data-act="print-check"]').addEventListener("click",()=>{let pr=document.getElementById("print-root");if(!pr){pr=document.createElement("div");pr.id="print-root";document.body.append(pr)}
+    pr.innerHTML="";pr.append(ck.querySelector(".rub-sheet").cloneNode(true));document.body.classList.add("print-rubric");
+    const done=()=>{document.body.classList.remove("print-rubric");removeEventListener("afterprint",done)};addEventListener("afterprint",done);window.print()});
+}
+// Student checklists (Christopher Selby). Tone checklist adapted from Habits of a Successful Orchestra Director, ch. 8.
+const TONE_CHECK={t:"Tone Production Checklist",d:"Students check their own playing and a partner's, then choose one goal for home practice. Pair it with the Tone row of any rubric.",
+ items:["Bow hand is flawless: fingers placed correctly, thumb and pinky curved, knuckles flexible.","Bow is perpendicular to the string and tilted correctly.","Contact point is the right distance between bridge and fingerboard.","Bow weight and speed are balanced, giving an excellent tone that projects.","The part of the bow is right for the articulation.","Articulations are well defined and in style."]};
+function checklistHTML(c){
+  return `<div class="rub-sheet"><div class="rub-top"><h3>${esc(c.t)}</h3><span>Tone and articulation</span></div>
+  <div class="rub-lines"><span>Name ____________________________</span><span>Partner ________________________</span><span>Date ___________</span></div>
+  <table class="rub"><thead><tr><th scope="col">Check</th><th scope="col" style="width:5.5em">Me</th><th scope="col" style="width:5.5em">Partner</th></tr></thead>
+  <tbody>${c.items.map(x=>`<tr><td>${esc(x)}</td><td class="sc"></td><td class="sc"></td></tr>`).join("")}</tbody></table>
+  <div class="rub-comm"><b>My goal for home practice</b></div>
+  <div class="rub-foot">${document.querySelector(".logo .lockup").outerHTML}<span>Checklist by Christopher Selby · StringEducation.org · Free to copy and adapt for your students</span></div></div>`;
 }
 function about(){
   app.innerHTML=`<h1>About</h1>
