@@ -161,7 +161,7 @@ footer .wrap{padding-block:24px;display:flex;justify-content:space-between;gap:1
 <header class="top"><div class="wrap">
   <a class="logo" href="#home" aria-label="StringEducation.org home"><svg class="lockup" viewBox="10 4 247 142" aria-hidden="true" style="color:var(--spruce)"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path stroke-width="1.44" d="M27.2 13.5 L37.2 43.8"/><path stroke-width="2.25" d="M37.20 43.80 C25.34 44.97 22.36 53.67 26.77 63.87 C29.32 69.76 33.32 70.42 33.16 77.99 C33.02 84.59 29.75 84.24 28.39 88.83 C27.22 92.75 27.01 97.08 27.28 101.15 C28.27 115.79 38.04 120.27 51.40 120.60"/><path stroke-width="1.62" d="M16.40 53.20 C16.39 57.81 17.32 62.09 19.57 66.14 C22.18 70.82 24.19 72.50 24.73 78.24 C25.04 81.64 24.97 85.72 22.73 88.48 C21.55 89.95 20.37 91.07 19.81 92.93 C15.57 106.80 19.43 121.97 35.20 125.40"/><path fill="currentColor" stroke="none" d="M47.27 126.82 Q50.57 137.77 52.62 141.93 Q52.03 137.33 48.73 126.38 A0.765 0.765 0 0 0 47.27 126.82Z"/></g><text x="41" y="73.5" font-family="Playfair Display, Georgia, serif" font-weight="600" font-size="31.9" fill="currentColor">String</text><text x="41" y="107.95" font-family="Playfair Display, Georgia, serif" font-weight="600" font-size="31.9" fill="currentColor">Education.org</text></svg></a>
   <nav class="main" aria-label="Main">
-    <a href="#foundations">Foundations</a><a href="#advancing">Advancing</a><a href="#theory">Theory &amp; Literacy</a><a href="#skills">Teach a Skill</a><a href="#assessment">Assessment</a><a href="#about">About</a>
+    <a href="#foundations">Foundations</a><a href="#advancing">Advancing</a><a href="#theory">Literacy &amp; Creativity</a><a href="#skills">Teach a Skill</a><a href="#assessment">Assessment</a><a href="#about">About</a>
   </nav>
 </div></header>
 
@@ -240,9 +240,18 @@ const SKILLS=[
  {id:"bow",books:[1],t:"Bow hold and right hand",lvl:"Book 1",d:"Pencil and straw bow holds, and why some teachers keep the bows until it's mastered."},
  {id:"rhythm",books:[1,2],t:"Rhythm",lvl:"Book 1",d:"Count out loud, keep a steady beat, then add the instrument."},
  {id:"reading",books:[1,2],t:"Note reading",lvl:"Book 1",d:"Flash cards, projected slides and practice websites for every instrument."},
- {id:"intonation",books:[1,2,3,4],t:"Intonation",lvl:"Book 2",d:"Put the finger in the right place, then tune it to the ensemble."},
- {id:"vibrato",books:[2,3,4],t:"Vibrato",lvl:"Middle Level",d:"Step-by-step sequences for violin, viola, cello and bass, with checkpoints.",ready:true},
+ {id:"intonation",unit:"ensemble",books:[1,2,3,4],t:"Intonation",lvl:"Book 2",d:"Put the finger in the right place, then tune it to the ensemble."},
+ {id:"vibrato",unit:"lefthand",books:[2,3,4],t:"Vibrato",lvl:"Middle Level",d:"Step-by-step sequences for violin, viola, cello and bass, with checkpoints.",ready:true},
  {id:"rehearsal",books:[1,2,3,4],t:"Rehearsal and classroom",lvl:"All books",d:"Rehearsal strategies, routines, procedures and classroom management."}
+];
+// Chris's six Fundamentals Time units (Advancing level only for now). Fundamentals Time = first half of class; Musical Rehearsal = second half.
+const UNITS=[
+ {id:"tone",t:"Tone & Articulation",d:"Tone production, rhythmic bowing patterns and articulations: slurs, staccato, detaché, spiccato and sautillé."},
+ {id:"lefthand",t:"Left Hand",d:"Finger patterns, shifting, vibrato, velocity and upper positions."},
+ {id:"keys",t:"Key Fluency",d:"Chords, scales, tonic and dominant arpeggios, and thirds."},
+ {id:"rhythm",t:"Rhythm & Reading",d:"Time signatures, rhythm reading and sight-reading practice."},
+ {id:"ensemble",t:"Ensemble",d:"Listening across the ensemble, playing together and controlling tempo, blending tone and intonation, and matching articulations, styles and dynamics."},
+ {id:"literacy",t:"Literacy & Creativity",d:"Music literacy, plus improvisation and composition."}
 ];
 const GIA="https://giamusic.com/product-streaming-videos-set/public/";
 const METHOD=[
@@ -250,8 +259,8 @@ const METHOD=[
   hs:"https://habitsstrings.com/audio-accompaniments-1-50/",index:"https://giamusic.com/habits-young-string-media",vids:{violin:"2b83239c319cc8b0098d867da6fc7ce5",viola:"ae728c69ed77566581627129342179f7",cello:"8a9596c192ab6d375afaace2f26f7e78",bass:"e3d63301cb83b340ad3d3d1694a02abb"}},
  {n:2,short:"Book 2",title:"Book 2: Building skills",series:"Habits of a Successful Young String Musician, Book 2",sub:"Building skills",pace:"Usually year 2, and often into year 3",skills:["new finger patterns and keys","slurs, hooked bows and dotted rhythms","scales and arpeggios","playing in tune as a section","ensemble and concert pieces"],
   hs:"https://habitsstrings.com/book-2/book-2-audio-accompaniments-1-50/",index:"https://giamusic.com/habits-young-string-media-2",vids:{violin:"808c23e9bdf37e31d98370bad0f2f992",viola:"adadb0f432006287978b47f2acf9d363",cello:"a49559fd6443d7384bad1d1c4e02eace",bass:"cac033fdcd1225c8e424b3ed78488e07"}},
- {n:3,short:"Middle Level",title:"3. Middle Level",series:"Habits of a Successful Middle Level String Musician",sub:"Middle level",pace:"Intermediate players, in middle school or high school",skills:["shifting and higher positions","vibrato","bowing styles and articulation","two-octave scales"],mm:"https://search.makemusic.com/p/habits-of-a-successful-middle-level-string-musician-28058/interactive",index:"https://giamusic.com/habits-of-a-successful-middle-level-string-musician"},
- {n:4,short:"Upper Level",title:"Upper Level",series:"Habits of a Successful String Musician, 2nd Edition",sub:"Advanced",pace:"Advanced high school players",skills:["advanced shifting and positions","refined vibrato and tone","advanced bowing","three-octave scales and etudes"],mm:"https://search.makemusic.com/p/habits-of-a-successful-string-musician-second-edition-48748/interactive",index:"https://giamusic.com/habits-of-a-successful-string-musician-second-edition"}
+ {n:3,short:"Middle Level",title:"3. Middle Level",series:"Habits of a Successful Middle Level String Musician",sub:"Middle level",pace:"Intermediate players, in middle school or high school",skills:["tone and articulation","finger patterns, shifting and vibrato","scales, arpeggios and thirds","rhythm reading and sight-reading","ensemble listening, blend and intonation"],mm:"https://search.makemusic.com/p/habits-of-a-successful-middle-level-string-musician-28058/interactive",index:"https://giamusic.com/habits-of-a-successful-middle-level-string-musician"},
+ {n:4,short:"Upper Level",title:"Upper Level",series:"Habits of a Successful String Musician, 2nd Edition",sub:"Advanced",pace:"Advanced high school players",skills:["spiccato and sautillé","upper positions, velocity and refined vibrato","scales and arpeggios in all keys","sight-reading and orchestral excerpts","ensemble blend, style and dynamics"],mm:"https://search.makemusic.com/p/habits-of-a-successful-string-musician-second-edition-48748/interactive",index:"https://giamusic.com/habits-of-a-successful-string-musician-second-edition"}
 ];
 const INST={all:"All strings",violin:"Violin",viola:"Viola",cello:"Cello",bass:"Bass"};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -264,7 +273,7 @@ const SHORT={1:"Book 1",2:"Book 2",3:"Middle Level",4:"Upper Level"};
 // Two level pages. Each gathers its books; a book filter on the page narrows to one book.
 const LEVELS=[
  {id:"foundations",nav:"Foundations",title:"Foundations (Books 1–2)",books:[1,2],books_lbl:"Books 1 and 2",series:"Habits of a Successful Young String Musician, Books 1 and 2",pace:"Usually years 1 to 3",lead:"From the first day with an instrument to playing in keys, slurring and reading as a section."},
- {id:"advancing",nav:"Advancing",title:"Advancing (Middle and Upper Level)",books:[3,4],books_lbl:"Middle and Upper Level",series:"Habits of a Successful Middle Level String Musician, and Habits of a Successful String Musician, 2nd Edition",pace:"Middle school through advanced high school",lead:"Shifting, vibrato, bowing styles and scales, up to advanced high school orchestra."}
+ {id:"advancing",nav:"Advancing",title:"Advancing (Middle and Upper Level)",books:[3,4],books_lbl:"Middle and Upper Level",series:"Habits of a Successful Middle Level String Musician, and Habits of a Successful String Musician, 2nd Edition",pace:"Middle school through advanced high school",lead:"Fundamentals Time in six units: tone and articulation, left hand, key fluency, rhythm and reading, ensemble, and literacy and creativity."}
 ];
 const levelOf=n=>LEVELS.find(L=>L.books.includes(n));
 const LVL=n=>SHORT[n];
@@ -296,7 +305,7 @@ function home(){
   <div class="paths" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">${LEVELS.map(L=>`<a class="path" href="#${L.id}"><span class="k">${esc(L.books_lbl)}</span><h3>${esc(L.title)}</h3><p>${esc(L.lead)}</p><p class="muted" style="font-size:.9rem">Matches <i>${esc(L.series)}</i>.</p><span class="count">Open ${esc(L.nav)} →</span></a>`).join("")}</div></section>
   <section aria-labelledby="more"><div class="sec-head"><h2 id="more">Across all books</h2></div>
   <div class="grid">
-    <a class="path" href="#theory"><span class="k">Read and watch</span><h3>Theory &amp; Literacy</h3><p>Tutorials for every unit of Music Theory for the Successful String Musician.</p><span class="count">${VIDEO_COUNT} videos →</span></a>
+    <a class="path" href="#theory"><span class="k">Read and watch</span><h3>Literacy &amp; Creativity</h3><p>Tutorials for every unit of Music Theory for the Successful String Musician.</p><span class="count">${VIDEO_COUNT} videos →</span></a>
     <a class="path" href="#skills"><span class="k">Teach</span><h3>Teach a skill</h3><p>Find any skill, like vibrato or intonation, without knowing which book it starts in.</p><span class="count">${liveSkills().length} skills →</span></a>
     <a class="path" href="#assessment"><span class="k">Assess</span><h3>Assessment</h3><p>Sample rubrics for every book, and a rubric creator that builds and prints your own.</p><span class="count">${SAMPLES.length} sample rubrics →</span></a>
   </div></section>
@@ -320,7 +329,7 @@ function videos(){
   const b=BOOKS.find(x=>x.book===book);
   const ch=(l,u,c)=>`<a class="chip${c?" t-"+c:""}" style="text-decoration:none;border-color:currentColor" target="_blank" rel="noopener" href="${u}">${esc(l)} →</a>`;
   const ol=a=>`<ol class="steps" style="margin-top:10px">${a.map(x=>`<li><span>${x}</span></li>`).join("")}</ol>`;
-  app.innerHTML=`<h1>Theory &amp; Literacy</h1>
+  app.innerHTML=`<h1>Literacy &amp; Creativity</h1>
   <h2 id="v-notes" style="margin-top:28px">Note reading</h2>
   <p class="muted" style="margin:8px 0 16px;max-width:44em">Exercises, flash cards and flash slides to print for students or project for the whole class.</p>
   <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr))">
@@ -413,12 +422,13 @@ function levelPage(id,only){
   if(vm.length)S.push(["b-ex","Professionals perform each exercise",`<p class="muted" style="margin-bottom:12px">Free videos of every exercise from <i>${esc(L.series)}</i> played by a professional with and without accompaniment.</p>${vm.map(m=>vchips(m,"")).join("")}`]);
   if(hm.length)S.push(["b-acc","Accompaniment tracks",`<p class="muted" style="margin-bottom:12px">Free play-along tracks for every exercise, on habitsstrings.com.</p><div class="chips">${hm.map(m=>`<a class="btn ghost" target="_blank" rel="noopener" href="${m.hs}">${esc(m.short)} →</a>`).join("")}</div>`]);
   if(mm.length)S.push(["b-acc","Practice tracks",`<p class="muted" style="margin-bottom:12px">Interactive practice tracks for these books are available with a MakeMusic Cloud subscription.</p><div class="chips">${mm.map(m=>`<a class="btn ghost" target="_blank" rel="noopener" href="${m.mm}">${esc(m.short)} on MakeMusic Cloud (subscription) →</a>`).join("")}</div>`]);
-  if(sk.length)S.push(["b-skill","Teach a skill",`<div class="grid" ${G2}>${sk.map(skillCard).join("")}</div>`]);
+  if(sk.length){const byUnit=id==="advancing";
+    S.push(["b-skill",byUnit?"Fundamentals Time units":"Teach a skill",byUnit?`<p class="muted" style="margin-bottom:12px">Fundamentals Time is the first half of class, when students learn technical skills and knowledge. Musical Rehearsal, the second half, is for concert music.</p>${UNITS.filter(u=>sk.some(s=>s.unit===u.id)).map(u=>`<h3 style="margin:18px 0 4px">${esc(u.t)}</h3><p class="muted" style="margin-bottom:10px">${esc(u.d)}</p><div class="grid" ${G2}>${sk.filter(s=>s.unit===u.id).map(skillCard).join("")}</div>`).join("")}`:`<div class="grid" ${G2}>${sk.map(skillCard).join("")}</div>`]);}
   if(rb.length)S.push(["b-assess","Sample rubrics",`<p class="muted" style="margin-bottom:12px">Ready-made rubrics on the 6-to-3 scale, with criteria written for each book. Open one in the rubric creator to adjust it and print it.</p><div class="grid" ${G2}>${rb.map(sampleCard).join("")}</div>`]);
   S.push(["b-create","Rubric creator",`${bk.length>1?`<div class="tabs" role="group" aria-label="Rubric creator book" style="margin-top:0">${bk.map(n=>`<button class="chip" data-crb="${n}">${esc(SHORT[n])}</button>`).join("")}</div>`:""}<div id="cr-wrap"></div>`]);
   const skl=[...new Set(ms.flatMap(m=>m.skills))];
   app.innerHTML=`<h1>${esc(L.title)}</h1>
-  <p class="lead muted" style="margin-top:12px;max-width:44em">${esc(cap(skl.join(", ")))}.</p>
+  <p class="lead muted" style="margin-top:12px;max-width:44em">${id==="advancing"&&!f?esc(L.lead):esc(cap(skl.join(", ")))+"."}</p>
   <div class="tabs" role="group" aria-label="Show one book">${[0,...L.books].map(n=>`<button class="chip" aria-pressed="${n===f}" data-lvb="${n}">${n?esc(SHORT[n]):esc(L.books_lbl)}</button>`).join("")}</div>
   <div class="layout" style="margin-top:16px">
   <aside class="toc"><b>On this page</b><ol>${S.map(s=>`<li><a href="#${s[0]}">${s[1]}</a></li>`).join("")}</ol></aside>
@@ -710,8 +720,8 @@ function wireSamples(scope){scope.querySelectorAll("[data-sample]").forEach(a=>a
   e.preventDefault();showCreator(s.b,s);document.getElementById("b-create").scrollIntoView({behavior:"smooth"})}))}
 let pendingSample=null;
 
-const ROUTES={home,teaching,care,videos,theory:videos,skills,vibrato,printables,assessment,about,foundations:()=>levelPage("foundations"),advancing:()=>levelPage("advancing"),beginning:()=>levelPage("foundations"),advanced:()=>levelPage("advancing"),book1:()=>levelPage("foundations",1),book2:()=>levelPage("foundations",2),book3:()=>levelPage("advancing",3),book4:()=>levelPage("advancing",4)};
-const NAV={teaching:"teaching",foundations:"foundations",advancing:"advancing",beginning:"foundations",advanced:"advancing",book1:"foundations",book2:"foundations",book3:"advancing",book4:"advancing",videos:"theory",theory:"theory",skills:"skills",vibrato:"skills",care:"skills",printables:"printables",assessment:"assessment",about:"about"};
+const ROUTES={home,teaching,care,videos,theory:videos,literacy:videos,skills,vibrato,printables,assessment,about,foundations:()=>levelPage("foundations"),advancing:()=>levelPage("advancing"),beginning:()=>levelPage("foundations"),advanced:()=>levelPage("advancing"),book1:()=>levelPage("foundations",1),book2:()=>levelPage("foundations",2),book3:()=>levelPage("advancing",3),book4:()=>levelPage("advancing",4)};
+const NAV={teaching:"teaching",foundations:"foundations",advancing:"advancing",beginning:"foundations",advanced:"advancing",book1:"foundations",book2:"foundations",book3:"advancing",book4:"advancing",videos:"theory",theory:"theory",literacy:"theory",skills:"skills",vibrato:"skills",care:"skills",printables:"printables",assessment:"assessment",about:"about"};
 function route(){
   const r=(location.hash||"#home").slice(1);
   if(r.startsWith("v-")||r.startsWith("b-")||r.startsWith("c-"))return;
