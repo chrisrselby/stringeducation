@@ -440,13 +440,16 @@ function levelPage(id,only){
   wireSamples(app);
   if(ps)setTimeout(()=>document.getElementById("b-create").scrollIntoView(),0);
 }
+// Card titles that replace the file-set name (Chris, 2026-11-27). The title names the book, so the card shows no book tag.
+const PART_TITLES={"String Warm Ups 1":{t:"Grade 1 Bowing, Intonation and Scale Warm Ups for Book 1",d:"Full score and student parts for violin, viola, cello and bass."}};
 // Items titled "Name: Part" (e.g. "String Warm Ups 1: Violin") become one card with a button per part.
 function groupParts(list){const out=[],g={};
   list.forEach(x=>{const m=x.t.match(/^(String Warm Ups \d+): (.+)$/);if(!m){out.push(x);return}
-    if(!g[m[1]]){g[m[1]]={t:m[1],type:x.type,lvl:x.lvl,d:"",parts:[]};out.push(g[m[1]])}
-    if(x.inst==="all")g[m[1]].d=x.d;g[m[1]].parts.push([m[2],x.url,x.inst])});
+    const o=PART_TITLES[m[1]];
+    if(!g[m[1]]){g[m[1]]={t:o?o.t:m[1],type:x.type,lvl:x.lvl,d:o?o.d:"",noTag:!!o,parts:[]};out.push(g[m[1]])}
+    if(x.inst==="all"&&!o)g[m[1]].d=x.d;g[m[1]].parts.push([m[2],x.url,x.inst])});
   return out}
-const partsCard=x=>`<article class="card"><span class="type">${esc(x.type)}</span><h3>${esc(x.t)}</h3><p class="muted">${esc(x.d)}</p><div class="meta">${lvlTag(x.lvl)}</div><div class="chips">${x.parts.map(([n,u,i])=>`<a class="chip t-${i}" style="text-decoration:none;border-color:currentColor" target="_blank" rel="noopener" href="${esc(u)}">${esc(n)}</a>`).join("")}</div></article>`;
+const partsCard=x=>`<article class="card"><span class="type">${esc(x.type)}</span><h3>${esc(x.t)}</h3><p class="muted">${esc(x.d)}</p>${x.noTag?"":`<div class="meta">${lvlTag(x.lvl)}</div>`}<div class="chips">${x.parts.map(([n,u,i])=>`<a class="chip t-${i}" style="text-decoration:none;border-color:currentColor" target="_blank" rel="noopener" href="${esc(u)}">${esc(n)}</a>`).join("")}</div></article>`;
 function showCreator(n,preset){
   const w=document.getElementById("cr-wrap");if(!w)return;
   w.innerHTML=creatorHTML(n);wireCreator(n,preset);
