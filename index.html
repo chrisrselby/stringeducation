@@ -514,6 +514,25 @@ function assessment(){
   app.innerHTML=`<h1>Assessment</h1><p class="lead muted" style="margin-top:12px;max-width:40em">Every rubric uses one 6-to-3 scale (6 Excellent, 5 Minor problem, 4 Significant problem, 3 Multiple problems) and criteria written for each book. They work with any method book. Open a sample to adjust and print it, or build your own with the rubric creator for each level.</p>
   ${LEVELS.map(L=>`<section><div class="sec-head"><div><h2>${esc(L.title)}</h2><p>${esc(L.books_lbl)}</p></div><a class="btn ghost" href="#${L.id}">${esc(L.nav)} rubric creator →</a></div>${L.books.map(n=>`<h3 style="margin:16px 0 10px">${esc(SHORT[n])}</h3><div class="grid">${SAMPLES.filter(r=>r.b===n).map(sampleCard).join("")}</div>`).join("")}</section>`).join("")}`;
   app.querySelectorAll("[data-sample]").forEach(a=>{const s=SAMPLES[+a.dataset.sample];a.setAttribute("href","#"+levelOf(s.b).id);a.addEventListener("click",()=>{pendingSample=s;lvBook[levelOf(s.b).id]=0})});
+  const ck=document.createElement("section");ck.innerHTML=`<div class="sec-head"><div><h2 id="checklists">Student checklists</h2><p>Quick yes/no checks students use on themselves and each other, alongside the teacher's rubric.</p></div></div>
+  <h3 style="margin:16px 0 6px">${esc(TONE_CHECK.t)}</h3><p class="muted" style="max-width:44em;margin-bottom:10px">${esc(TONE_CHECK.d)}</p>
+  <div style="overflow-x:auto">${checklistHTML(TONE_CHECK)}</div>
+  <p style="margin-top:12px"><button class="btn" data-act="print-check">Print checklist</button></p>`;
+  app.append(ck);
+  ck.querySelector('[data-act="print-check"]').addEventListener("click",()=>{let pr=document.getElementById("print-root");if(!pr){pr=document.createElement("div");pr.id="print-root";document.body.append(pr)}
+    pr.innerHTML="";pr.append(ck.querySelector(".rub-sheet").cloneNode(true));document.body.classList.add("print-rubric");
+    const done=()=>{document.body.classList.remove("print-rubric");removeEventListener("afterprint",done)};addEventListener("afterprint",done);window.print()});
+}
+// Student checklists (Christopher Selby). Tone checklist adapted from Habits of a Successful Orchestra Director, ch. 8.
+const TONE_CHECK={t:"Tone Production Checklist",d:"Students check their own playing and a partner's, then choose one goal for home practice. Pair it with the Tone row of any rubric.",
+ items:["Bow hand is flawless: fingers placed correctly, thumb and pinky curved, knuckles flexible.","Bow is perpendicular to the string and tilted correctly.","Contact point is the right distance between bridge and fingerboard.","Bow weight and speed are balanced, giving an excellent tone that projects.","The part of the bow is right for the articulation.","Articulations are well defined and in style."]};
+function checklistHTML(c){
+  return `<div class="rub-sheet"><div class="rub-top"><h3>${esc(c.t)}</h3><span>Tone and articulation</span></div>
+  <div class="rub-lines"><span>Name ____________________________</span><span>Partner ________________________</span><span>Date ___________</span></div>
+  <table class="rub"><thead><tr><th scope="col">Check</th><th scope="col" style="width:5.5em">Me</th><th scope="col" style="width:5.5em">Partner</th></tr></thead>
+  <tbody>${c.items.map(x=>`<tr><td>${esc(x)}</td><td class="sc"></td><td class="sc"></td></tr>`).join("")}</tbody></table>
+  <div class="rub-comm"><b>My goal for home practice</b></div>
+  <div class="rub-foot">${document.querySelector(".logo .lockup").outerHTML}<span>Checklist by Christopher Selby · StringEducation.org · Free to copy and adapt for your students</span></div></div>`;
 }
 function about(){
   app.innerHTML=`<h1>About</h1>
