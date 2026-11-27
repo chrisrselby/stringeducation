@@ -441,7 +441,8 @@ function levelPage(id,only){
   if(ps)setTimeout(()=>document.getElementById("b-create").scrollIntoView(),0);
 }
 // Card titles that replace the file-set name (Chris, 2026-11-27). The title names the book, so the card shows no book tag.
-const PART_TITLES={"String Warm Ups 1":{t:"Grade 1 Bowing, Intonation and Scale Warm Ups for Book 1",d:"Full score and student parts for violin, viola, cello and bass."}};
+const PART_TITLES={"String Warm Ups 1":{t:"Grade 1 Bowing, Intonation and Scale Warm Ups for Book 1",d:"Full score and student parts for violin, viola, cello and bass."},
+ "String Warm Ups 2":{t:"Grade II Bowing, Intonation and Scale Warm Ups for Book 2",d:"Full score and student parts for violin, viola, cello and bass."}};
 // Items titled "Name: Part" (e.g. "String Warm Ups 1: Violin") become one card with a button per part.
 function groupParts(list){const out=[],g={};
   list.forEach(x=>{const m=x.t.match(/^(String Warm Ups \d+): (.+)$/);if(!m){out.push(x);return}
